@@ -105,11 +105,11 @@ function moveCoins(toaddress, amount, callback) {
 }
 
 function beacon(collection, doc, callback) {
-  var options = {
+  var joptions = {
     "host": options.joolaHost,
     "APIToken": options.joolaAPIToken
   }
-  joolaio.init(options, function (err, result) {
+  joolaio.init(joptions, function (err, result) {
     if (!err) {
       joolaio.beacon.insert(collection, doc, function (err, pushedDocument) {
         if (!err)
