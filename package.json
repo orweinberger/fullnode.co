@@ -7,6 +7,10 @@
   },
   "dependencies": {
     "express": "*",
-    "jade": "*"
+    "jade": "*",
+    "bitcoin":"*",
+    "joola.io.sdk":"https://github.com/joola/joola.io.sdk/tarball/develop",
+    "blockchain-wallet":"*",
+    "linode-api":"*"
   }
 }
