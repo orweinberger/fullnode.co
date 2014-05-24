@@ -34,6 +34,6 @@ If you have any ideas for new features, please create an issue.
 
 ### Buy me a beer
 
-![12idKQBikRgRuZEbtxXQ4WFYB7Wa3hZzhT](https://blockchain.info/qr?data=12idKQBikRgRuZEbtxXQ4WFYB7Wa3hZzhT&size=200)
+![12idKQBikRgRuZEbtxXQ4WFYB7Wa3hZzhT](http://i.imgur.com/HHQkm9t.png)
 
 12idKQBikRgRuZEbtxXQ4WFYB7Wa3hZzhT
