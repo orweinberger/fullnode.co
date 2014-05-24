@@ -1,0 +1,40 @@
+dev:
+  mongo:
+    host: localhost
+    port: 27017
+    dbname: dev_fullnode
+  joola:
+    host: "http://localhost:8080"
+    apitoken: "joolapassword"
+    collection: dev_bitcoin
+  blockchain:
+    id: "your blockchain id"
+    password: "your blockchain password"
+  providers:
+    linode:
+      apikey: "your linode api key"
+      rootpass: "root password for full nodes"
+  general:
+    hotWalletAddress: "hot wallet btc address"
+    coldWalletAddress: "cold wallet btc address"
+    runInterval: 20000
+prod:
+ mongo:
+    host: localhost
+    port: 27017
+    dbname: fullnode
+  joola:
+    host: "http://localhost:8080"
+    apitoken: "joolapassword"
+    collection: bitcoin
+  blockchain:
+    id: "your blockchain id"
+    password: "your blockchain password"
+  providers:
+    linode:
+      apikey: "your linode api key"
+      rootpass: "root password for full nodes"
+  general:
+    hotWalletAddress: "hot wallet btc address"
+    coldWalletAddress: "cold wallet btc address"
+    runInterval: 20000
