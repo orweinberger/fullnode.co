@@ -18,8 +18,8 @@ function queue() {
         logger.info('getting price ' + price)
         if (!err) {
           total_in_usd = Math.floor(parseFloat(price) * parseFloat((balance - 10000) / 100000000));
-          coins_to_move = (1 / parseFloat(price)) * 100000000;
-          if (total_in_usd >= 1) {
+          coins_to_move = (config.providers.linode.price / parseFloat(price)) * 100000000;
+          if (total_in_usd >= config.providers.linode.price) {
             common.queueCoins(coins_to_move, config.general.coldWalletAddress, function (err) {
               logger.info("Coins queued " + coins_to_move);
               if (!err) {

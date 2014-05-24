@@ -14,6 +14,7 @@ dev:
     linode:
       apikey: "your linode api key"
       rootpass: "root password for full nodes"
+      price: 20
   general:
     hotWalletAddress: "hot wallet btc address"
     coldWalletAddress: "cold wallet btc address"
@@ -34,6 +35,7 @@ prod:
     linode:
       apikey: "your linode api key"
       rootpass: "root password for full nodes"
+      price: 20
   general:
     hotWalletAddress: "hot wallet btc address"
     coldWalletAddress: "cold wallet btc address"
