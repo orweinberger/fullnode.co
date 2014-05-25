@@ -19,6 +19,7 @@ dev:
     hotWalletAddress: "hot wallet btc address"
     coldWalletAddress: "cold wallet btc address"
     runInterval: 20000
+    callbackSecret: "fullnodelKSC1m9jds8JmdMS"
 prod:
  mongo:
     host: localhost
@@ -40,3 +41,4 @@ prod:
     hotWalletAddress: "hot wallet btc address"
     coldWalletAddress: "cold wallet btc address"
     runInterval: 20000
+    callbackSecret: "fullnodelKSC1m9jds8JmdMS"
