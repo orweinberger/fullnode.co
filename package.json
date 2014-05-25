@@ -6,9 +6,6 @@
     "start": "node app.js"
   },
   "dependencies": {
-    "express": "*",
-    "jade": "*",
-    "bitcoin":"*",
     "joola.io.sdk":"https://github.com/joola/joola.io.sdk/tarball/develop",
     "blockchain-wallet":"*",
     "linode-api":"*",
@@ -17,6 +14,13 @@
     "moment":"*",
     "async":"*",
     "yaml":"*",
-    "config":"*"
+    "config":"*",
+    "express": "*",
+    "static-favicon": "*",
+    "morgan": "*",
+    "cookie-parser": "*",
+    "body-parser": "*",
+    "debug": "*",
+    "jade": "*"
   }
 }
