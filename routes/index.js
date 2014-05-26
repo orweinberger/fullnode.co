@@ -20,8 +20,13 @@ function queue(dns) {
 }
 
 router.get('/', function (req, res) {
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: 'Fullnode.co - Adopt a full node' });
 });
+
+router.get('/faq', function (req, res) {
+  res.render('faq', { title: 'Fullnode.co - Adopt a full node' });
+});
+
 
 router.post('/callback', function (req, res) {
   if (req.query.secret == config.general.callbackSecret) {

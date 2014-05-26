@@ -1,0 +1,37 @@
+extends layout
+block content
+  .col-md-12
+    .container
+      h2 FAQs
+      p.
+        <strong>Q</strong>: $20 Seems too much for a server small server running bitcoind, why so much?
+        <br><br>
+        <strong>A</strong>: We currently support Linode and DigitalOcean, for Linode the cheapest server is priced at $20, for DigitalOcean the chepeast (viable) server is offered for $10. We require a $20 contribution to allow even distribution between providers. If you choose to donate $20 and the selected provider will be DigitalOcean, we will provision 2 servers, one that you will name and another that we will randomly name.
+      hr
+      p.
+        <strong>Q</strong>: What if I want to contribute less than $20?
+        <br><br>
+        <strong>A</strong>: You can contribute any amount that you wish, however you will not be able to name the server. At the end of each day we will pool all the non-$20 transactions and provusion the neccessary amount of full nodes. 
+      hr
+      p.
+        <strong>Q</strong>: Can you prove that you are actually deploying a server for each contribution?
+        <br><br>
+        <strong>A</strong>: After you send us the coins, you will be able to see the details of the full node in the server list. Additionally each server responds to HTTP holding a banner page indicating that this server was created by fullnode.co.
+      hr
+      p.
+        <strong>Q</strong>: How can we know that you're not using the servers for mining or other stuff?
+        <br><br>
+        <strong>A</strong>: I have yet to find a way to prove this, if you have any ideas please contact me and I will be happy to apply changes to the server images.
+      hr
+      p.
+        <strong>Q</strong>: Centralization is bad, what if Linode/DigitalOcean closes your account?
+        <br><br>
+        <strong>A</strong>: The project is completely open sourced, feel free to contribute to it, open issues if you find any bugs and launch your own fullnode.co website to mitigate centralization.
+      hr
+      p.
+        <strong>Q</strong>: How can I check if the server that was provision is in fact running as a full node?
+        <br><br>
+        <strong>A</strong>: You can take any IP from the server list and check it against https://getaddr.bitnodes.io, please be sure to use the IP address rather than the host since DNS takes time to propagate. 
+  .col-md-12
+    .container
+      
