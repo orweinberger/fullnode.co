@@ -13,7 +13,7 @@ $('#servername').keyup(function () {
 
 $(document).ready(function () {
   $('#coinbaseimage').click(function () {
-    $(document).trigger('coinbase_show_modal', '0422e9a7ed37394670e6fbe4c3fa2971');
+    $(document).trigger('coinbase_show_modal', '391bf509b379d53c65af3a79188bfde2');
     return false;
   });
 
