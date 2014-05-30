@@ -8,14 +8,16 @@ This repository is the backend behind http://fullnode.co
 2. MongoDB instance
 3. joola.io instance (https://github.com/joola/joola.io)
 4. Linode.com account
-5. Blockchain.info wallet account
+5. Coinbase account
 
 ### How does it work?
 
-1. Every X seconds (defined in the config) the script will run two functions, `run()` and `queue()`.
-2. The `queue()` function checks the hot wallet for the current balance. If the current balance is enough to fund a new server it will add a server to the queue and it will also add a transaction to a queue to transfer the BTC from the hot wallet to the cold wallet.
-3. The `run()` function will check the queue for any unattended items and will provision new servers and will actually move the coins between wallets.
-4. A lot of logging is currently going to the console, this is to debug any issues (hey, we're still in alpha).
+1. The visitor is able to choose a name for his server
+2. If the DNS is available, he will be opted to click the 'Pay with Bitcoin' coinbase button
+3. Once the payment is done ($20) the app will get a callback from Coinbase that a payment was made along with the requested DNS name
+4. The app will then start the provisioning process which also includes the setup of the new DNS record.
+5. Once done, all data will be pushed to a joola.io instance. This will allow us to update the charts/tables on the website in real-time with the creation of the new server.
+
 
 ### Contribute to this project
 
