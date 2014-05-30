@@ -16,7 +16,7 @@
     "yaml":"*",
     "config":"*",
     "express": "*",
-    "static-favicon": "*",
+    "serve-favicon": "*",
     "morgan": "*",
     "cookie-parser": "*",
     "body-parser": "*",
