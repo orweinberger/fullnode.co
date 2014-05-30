@@ -1,7 +1,6 @@
 var config = require('config').dev;
 var joola = require('./lib/joola')
 var common = require('./lib/common');
-var blockchain = require('./lib/blockchain');
 var linode = require('./lib/providers/linode');
 var winston = require('winston');
 var moment = require('moment');

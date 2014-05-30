@@ -5,40 +5,34 @@ dev:
     dbname: dev_fullnode
   joola:
     host: "http://localhost:8080"
-    apitoken: "joolapassword"
+    apitoken: "apitoken-demo"
     collection: dev_bitcoin
-  blockchain:
-    id: "your blockchain id"
-    password: "your blockchain password"
   providers:
     linode:
-      apikey: "your linode api key"
-      rootpass: "root password for full nodes"
-      price: 20
+      apikey: "LINODE-API-KEY"
+      rootpass: "ROOT-PASSWORD"
+      price: 3
   general:
-    hotWalletAddress: "hot wallet btc address"
-    coldWalletAddress: "cold wallet btc address"
     runInterval: 20000
-    callbackSecret: "fullnodelKSC1m9jds8JmdMS"
+    callbackSecret: "CHANGE-THIS"
+  coinbase:
+    buttonid: "1ec2d26bf6c385c40d2148253d5a4df2"
 prod:
- mongo:
+  mongo:
     host: localhost
     port: 27017
     dbname: fullnode
   joola:
     host: "http://localhost:8080"
-    apitoken: "joolapassword"
+    apitoken: "apitoken-demo"
     collection: bitcoin
-  blockchain:
-    id: "your blockchain id"
-    password: "your blockchain password"
   providers:
     linode:
-      apikey: "your linode api key"
-      rootpass: "root password for full nodes"
+      apikey: "LINODE-API-KEY"
+      rootpass: "ROOT-PASSWORD"
       price: 20
   general:
-    hotWalletAddress: "hot wallet btc address"
-    coldWalletAddress: "cold wallet btc address"
     runInterval: 20000
-    callbackSecret: "fullnodelKSC1m9jds8JmdMS"
+    callbackSecret: "CHANGE-THIS"
+  coinbase:
+    buttonid: "1ec2d26bf6c385c40d2148253d5a4df2"
