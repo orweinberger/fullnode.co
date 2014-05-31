@@ -5,3 +5,15 @@
 #coinbaseimage {
   opacity:0.7
 }
+
+
+.dnsok, .dnsfail, .spinner {
+  display: none;
+  float:left;
+  margin-right:15px;
+}
+
+.spinner img {
+  width:30px;
+  height:30px;
+}

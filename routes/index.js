@@ -26,22 +26,19 @@ router.get('/faq', function (req, res) {
   res.render('faq', { title: 'Fullnode.co - Adopt a full node' });
 });
 
-router.get('/dnscheck', function (req, res) {
-  if (!req.query.dns)
+router.post('/dnscheck', function (req, res) {
+  if (!req.body.dns)
     return res.json(500, {"error": "Missing parameter: dns"});
-  var dns = req.query.dns;
+  var dns = req.body.dns;
   common.checkDNS(dns, function (err, result) {
     if (err) {
-      console.log('0');
       return res.json(500, {"error": "Could not fetch DNS list"});
     }
     else {
       if (result) {
-        console.log('1');
         return res.json(500, {"error": "DNS taken"});
       }
       else {
-        console.log('2');
         return res.send(200);
       }
     }
