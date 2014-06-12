@@ -6,9 +6,10 @@ var winston = require('winston');
 var moment = require('moment');
 var express = require('express');
 var router = express.Router();
+var MongoClient = require('mongodb').MongoClient;
 
-function queue(dns) {
-  common.queueServer('linode', dns, function (err) {
+function queue(userid) {
+  common.queueServer('linode', userid, function (err) {
     if (!err) {
       winston.info("Server queued");
     }
@@ -17,9 +18,19 @@ function queue(dns) {
     }
   });
 }
-
 router.get('/', function (req, res) {
-  res.render('index', { title: 'Fullnode.co - Adopt a full node' });
+  var uuid = common.uuid();
+  MongoClient.connect("mongodb://localhost:27017/" + config.mongo.dbname, function (err, db) {
+    if (err)
+      return res.json(500,{"error":"Could not connect to database"});
+    var User = db.collection('users');
+    User.insert({timestamp: new Date(), userid: uuid}, {w: 1}, function (err, result) {
+      if (err)
+        return res.json(500,{"error":"Could not insert user to database"});
+      return res.render('index', { title: 'Fullnode.co - Adopt a full node', uuid: uuid });
+    });
+  });
+  
 });
 
 router.get('/faq', function (req, res) {
@@ -48,10 +59,20 @@ router.post('/dnscheck', function (req, res) {
 router.post('/callback', function (req, res) {
   if (req.query.secret == config.general.callbackSecret) {
     var order = req.body.order;
-    var dns = req.body.order.custom;
-    dns = dns.replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '-')
+    var userid = req.body.order.custom;
+    //dns = dns.replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '-')
     if (order.status == "completed" && order.total_native.cents == config.providers.linode.price * 100) {
-      queue(dns);
+      MongoClient.connect("mongodb://localhost:27017/" + config.mongo.dbname, function (err, db) {
+        if (err)
+          return res.json(500,{"error":"Could not connect to database"});
+        var User = db.collection('users');
+        User.update({userid: userid},{$set: {paid:1}}, function (err, result) {
+          if (err)
+            return res.json(500,{"error":"Could not insert user to database"});
+          queue(userid);
+          return res.send(200);
+        });
+      });
     }
     return res.send(200);
   }

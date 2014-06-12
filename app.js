@@ -15,6 +15,8 @@ var routes = require('./routes/index');
 var app = express();
 var debug = require('debug')('generated-express-app');
 
+var MongoClient = require('mongodb').MongoClient;
+
 function run() {
   common.getServerQueue(function (err, server) {
     if (err)
@@ -32,13 +34,25 @@ function run() {
               winston.error("[dequeueServer] " + err);
             else {
               winston.info("dequeued Server");
-              joola.beacon(config.joola.collection, {"timestamp": null, "servers": 1, "ipaddress": srv.ip, "dc": srv.dc, "serverid": srv.serverid}, function (err, doc) {
+
+              MongoClient.connect("mongodb://localhost:27017/" + config.mongo.dbname, function (err, db) {
                 if (err)
-                  winston.error("[beacon] " + err);
-                else {
-                  winston.info("Pushed data into joola");
-                  winston.info(doc);
-                }
+                  winston.error("[mongoUpdate] " + err);
+                var sq = db.collection('serverqueue');
+                sq.update({userid: server.userid}, {$set: {"ip": srv.ip, "dc": srv.dc, "serverid": srv.serverid}}, function (err, result) {
+                  if (err)
+                    winston.error("[mongoUpdate] " + err);
+                  else {
+                    joola.beacon(config.joola.collection, {"timestamp": null, "servers": 1, "ipaddress": srv.ip, "dc": srv.dc, "serverid": srv.serverid}, function (err, doc) {
+                      if (err)
+                        winston.error("[beacon] " + err);
+                      else {
+                        winston.info("Pushed data into joola");
+                        winston.info(doc);
+                      }
+                    });
+                  }
+                });
               });
             }
           });
@@ -80,7 +94,7 @@ app.use('/', routes);
 
 app.set('port', process.env.PORT || 3000);
 
-var server = app.listen(app.get('port'), function() {
+var server = app.listen(app.get('port'), function () {
   debug('Express server listening on port ' + server.address().port);
 });
 
