@@ -74,7 +74,8 @@ router.post('/callback', function (req, res) {
         });
       });
     }
-    return res.send(200);
+    else
+      return res.send(200);
   }
   else
     return res.send(403);
