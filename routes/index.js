@@ -81,7 +81,7 @@ router.post('/callback', function (req, res) {
     return res.send(403);
 });
 
-router.get('/dns/:userid', function (req, res) {
+router.param('userid', function (req, res, next, id) {
   MongoClient.connect("mongodb://localhost:27017/" + config.mongo.dbname, function (err, db) {
     if (err)
       return res.json(500, {"error": "Could not connect to database"});
@@ -89,9 +89,21 @@ router.get('/dns/:userid', function (req, res) {
     sq.findOne({userid: req.params[0], dnsset: 0}, function (err, result) {
       if (err)
         return res.json(403, {"error": "You have already selected a DNS name for your server"});
-      return res.render('dns', {userid: req.params[0]})
-    })
+      if (result) {
+        req.userid = result.userid;
+        return next();
+      }
+      else
+        return res.json(403, {"error": "Could not find user"});
+    });
   });
+});
+
+router.get('/dns/:userid', function (req, res) {
+  if (req.userid)
+    return res.render('dns', {userid: req.userid})
+  else
+    return res.json(403, {"error": "Could not find user"});
 });
 
 router.post('/setdns', function (req, res) {
