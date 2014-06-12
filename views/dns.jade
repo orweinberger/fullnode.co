@@ -1,0 +1,21 @@
+extends layout
+block content
+  .col-md-12
+    .container
+      h2 Thank you for helping the Bitcoin network!
+      p Since you paid $20 or over, you get to name your node!
+      p Select a name for your server by filling in the text box below, if the name is available you will be able to submit your selection.
+  .col-md-12
+    .container
+      hr
+      .nameyourserver
+        .col-md-8
+          .spinner
+            img(src="/img/712.GIF")
+          .dnsok V
+          .dnsfail X
+          input#servername(type="text", placeholder="Name your server")
+          | .fullnode.co
+          button#setdns.btn.btn-success(disabled) Submit        
+  script.
+    var userid = '#{userid}';

@@ -8,34 +8,37 @@ $('#servername').keyup(function () {
     $('.spinner').hide();
     $('.dnsok').hide();
     $('.dnsfail').show();
-    $('#coinbaseimage').css('opacity', 0.7);
-    $('#coinbaseimage').prop('disabled', true);
+    $('#setdns').prop('disabled', true);
   }
-  else {    
+  else {
     $.post('/dnscheck', {"dns": sname}, function (data, status) {
-      $('.coinbase-button').attr('data-custom', sname + ';;' + uuid);
+      $('.coinbase-button').attr('data-custom', uuid);
       $('.spinner').hide();
       $('.dnsfail').hide();
       $('.dnsok').show();
-      $('#coinbaseimage').css('opacity', 1);
-      $('#coinbaseimage').prop('disabled', false);
+      $('#setdns').prop('disabled', false);
     }).fail(function (data) {
       $('.spinner').hide();
       $('.dnsok').hide();
       $('.dnsfail').show();
-      $('#coinbaseimage').css('opacity', 0.7);
-      $('#coinbaseimage').prop('disabled', true);
+      $('#setdns').prop('disabled', true);
     });
-}
+  }
 
 });
+
+$('#setdns').on('click', function () {
+  $.post('/setdns', {"dns": sname, "userid": userid}, function () {
+    window.location = "/?dnsset=1";
+  });
+})
 
 $(document).ready(function () {
   $('#coinbaseimage').click(function () {
     var button = $(this);
     $('iframe').remove();
     $(button).prop('disabled', true);
-    $('body').append('<iframe src="https://coinbase.com/buttons/1ec2d26bf6c385c40d2148253d5a4df2/widget?code=1ec2d26bf6c385c40d2148253d5a4df2&buttonStyle=none&custom=' + sname + ';;' + uuid + '" id="coinbase_modal_iframe_1ec2d26bf6c385c40d2148253d5a4df2" name="coinbase_modal_iframe_1ec2d26bf6c385c40d2148253d5a4df2" style="background-color: transparent; border: 0px none transparent; overflow: hidden; display: none; position: fixed; visibility: visible; margin: 0px; padding: 0px; left: 0px; top: 0px; width: 100%; height: 100%; z-index: 9999;" scrolling="no" allowtransparency="true" frameborder="0"></iframe>');
+    $('body').append('<iframe src="https://coinbase.com/buttons/1ec2d26bf6c385c40d2148253d5a4df2/widget?code=1ec2d26bf6c385c40d2148253d5a4df2&buttonStyle=none&custom=' + uuid + '" id="coinbase_modal_iframe_1ec2d26bf6c385c40d2148253d5a4df2" name="coinbase_modal_iframe_1ec2d26bf6c385c40d2148253d5a4df2" style="background-color: transparent; border: 0px none transparent; overflow: hidden; display: none; position: fixed; visibility: visible; margin: 0px; padding: 0px; left: 0px; top: 0px; width: 100%; height: 100%; z-index: 9999;" scrolling="no" allowtransparency="true" frameborder="0"></iframe>');
     $('<div class="modal-backdrop" style="opacity:0.7"></div>').appendTo(document.body);
     setTimeout(function () {
       $('.modal-backdrop').remove();

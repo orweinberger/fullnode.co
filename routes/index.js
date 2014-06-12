@@ -22,15 +22,15 @@ router.get('/', function (req, res) {
   var uuid = common.uuid();
   MongoClient.connect("mongodb://localhost:27017/" + config.mongo.dbname, function (err, db) {
     if (err)
-      return res.json(500,{"error":"Could not connect to database"});
+      return res.json(500, {"error": "Could not connect to database"});
     var User = db.collection('users');
     User.insert({timestamp: new Date(), userid: uuid}, {w: 1}, function (err, result) {
       if (err)
-        return res.json(500,{"error":"Could not insert user to database"});
+        return res.json(500, {"error": "Could not insert user to database"});
       return res.render('index', { title: 'Fullnode.co - Adopt a full node', uuid: uuid });
     });
   });
-  
+
 });
 
 router.get('/faq', function (req, res) {
@@ -64,11 +64,11 @@ router.post('/callback', function (req, res) {
     if (order.status == "completed" && order.total_native.cents == config.providers.linode.price * 100) {
       MongoClient.connect("mongodb://localhost:27017/" + config.mongo.dbname, function (err, db) {
         if (err)
-          return res.json(500,{"error":"Could not connect to database"});
+          return res.json(500, {"error": "Could not connect to database"});
         var User = db.collection('users');
-        User.update({userid: userid},{$set: {paid:1}}, function (err, result) {
+        User.update({userid: userid}, {$set: {paid: 1}}, function (err, result) {
           if (err)
-            return res.json(500,{"error":"Could not insert user to database"});
+            return res.json(500, {"error": "Could not insert user to database"});
           queue(userid);
           return res.send(200);
         });
@@ -79,6 +79,43 @@ router.post('/callback', function (req, res) {
   }
   else
     return res.send(403);
+});
+
+router.get('/dns/:userid', function (req, res) {
+  MongoClient.connect("mongodb://localhost:27017/" + config.mongo.dbname, function (err, db) {
+    if (err)
+      return res.json(500, {"error": "Could not connect to database"});
+    var sq = db.collection('serverqueue');
+    sq.findOne({userid: req.params[0], dnsset: 0}, function (err, result) {
+      if (err)
+        return res.json(403, {"error": "You have already selected a DNS name for your server"});
+      return res.render('dns', {userid: req.params[0]})
+    })
+  });
+});
+
+router.post('/setdns', function (req, res) {
+  var dns = req.body.dns;
+  dns = dns.replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '-');
+  MongoClient.connect("mongodb://localhost:27017/" + config.mongo.dbname, function (err, db) {
+    if (err)
+      return res.json(500, {"error": "Could not find a valid server for this user"});
+    var server = db.collection('serverqueue');
+    server.findOne({userid: req.body.userid, dnsset: 0}, function (err, result) {
+      if (err)
+        return res.json(500, {"error": "Could not find a valid server for this user"});
+      common.setDNS(dns, result.ip, function (err) {
+        if (err)
+          return res.json(500, {"error": "Could not set DNS"});
+        server.update({userid: req.body.userid, dnsset: 0}, {$set: {dnsset: 1}}, function (err, result) {
+          if (err)
+            return res.json(500, {"error": "Could not update dnsset=1"});
+          return res.send(200);
+        });
+      });
+    })
+  });
+
 });
 
 module.exports = router;
