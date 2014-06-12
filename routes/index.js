@@ -86,7 +86,7 @@ router.param('userid', function (req, res, next, id) {
     if (err)
       return res.json(500, {"error": "Could not connect to database"});
     var sq = db.collection('serverqueue');
-    sq.findOne({userid: req.params[0], dnsset: 0}, function (err, result) {
+    sq.findOne({userid: id, dnsset: 0}, function (err, result) {
       if (err)
         return res.json(403, {"error": "You have already selected a DNS name for your server"});
       if (result) {
