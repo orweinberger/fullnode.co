@@ -5,7 +5,7 @@
 1. Node.js v0.10.x
 2. MongoDB instance
 3. joola.io instance (https://github.com/joola/joola.io)
-4. Linode.com account
+4. Linode.com & DigitalOcean accounts
 5. Coinbase account
 
 ### How does it work?
