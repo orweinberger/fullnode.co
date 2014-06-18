@@ -1,13 +1,14 @@
 #!/bin/bash
 yum -y update
 cd /root
-wget https://bitcoin.org/bin/0.9.1/bitcoin-0.9.1-linux.tar.gz
-tar zfx bitcoin-0.9.1-linux.tar.gz
-cd bitcoin-0.9.1-linux/bin/64
+wget https://bitcoin.org/bin/0.9.2/bitcoin-0.9.2-linux.tar.gz
+tar zfx bitcoin-0.9.2-linux.tar.gz
+cd bitcoin-0.9.2-linux/bin/64
 mkdir /root/.bitcoin
+wget https://bitcoin.org/bin/blockchain/bootstrap.dat.torrent -P /root/.bitcoin/
 echo "rpcuser=rpcuser" >> /root/.bitcoin/bitcoin.conf
 echo "rpcpassword=CHANGETHIS" >> /root/.bitcoin/bitcoin.conf
-./bitcoind.static -txindex &
+./bitcoind -txindex &
 
 echo "[nginx]" >> /etc/yum.repos.d/nginx.repo
 echo "name=nginx repo" >> /etc/yum.repos.d/nginx.repo
