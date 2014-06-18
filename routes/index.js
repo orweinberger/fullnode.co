@@ -64,11 +64,11 @@ router.post('/callback', function (req, res) {
     if (order.status == "completed" && order.total_native.cents == config.providers.linode.price * 100) {
       MongoClient.connect("mongodb://localhost:27017/" + config.mongo.dbname, function (err, db) {
         if (err)
-          return res.json(500, {"error": "Could not connect to database"});
+          return res.send(500);
         var User = db.collection('users');
         User.update({userid: userid}, {$set: {paid: 1}}, function (err, result) {
           if (err)
-            return res.json(500, {"error": "Could not insert user to database"});
+            return res.send(500);
           queue(userid);
           return res.send(200);
         });
