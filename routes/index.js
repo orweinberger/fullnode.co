@@ -65,11 +65,17 @@ router.post('/callback', function (req, res) {
       MongoClient.connect("mongodb://localhost:27017/" + config.mongo.dbname, function (err, db) {
         if (err)
           return res.send(500);
+        var sq = db.collection('serverqueue');
         var User = db.collection('users');
         User.update({userid: userid}, {$set: {paid: 1}}, function (err, result) {
           if (err)
             return res.send(500);
-          queue(userid);
+          sq.findOne({userid: userid}, function (err, result) {
+            //This is a hack since Coinbase sometimes gets an error when calling the callback url. Coinbase will re-attempt any errored callbacks but we need to make sure the server was not already created.
+            if (result)
+              return res.send(200);
+            queue(userid);
+          });
           return res.send(200);
         });
       });
