@@ -122,10 +122,10 @@ router.post('/setdns', function (req, res) {
     server.findOne({userid: req.body.userid, dnsset: 0}, function (err, result) {
       if (err)
         return res.json(500, {"error": "Could not find a valid server for this user"});
-      common.setDNS(dns, result.ip, function (err) {
+      common.setDNS(dns, result.ip, function (err, actualdns) {
         if (err)
           return res.json(500, {"error": "Could not set DNS"});
-        server.update({userid: req.body.userid, dnsset: 0}, {$set: {dnsset: 1, dns: dns}}, function (err, result) {
+        server.update({userid: req.body.userid, dnsset: 0}, {$set: {dnsset: 1, dns: actualdns}}, function (err, result) {
           if (err)
             return res.json(500, {"error": "Could not update dnsset=1"});
           return res.send(200);
