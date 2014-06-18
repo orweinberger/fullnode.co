@@ -30,7 +30,7 @@ prod:
     linode:
       apikey: "LINODE-API-KEY"
       rootpass: "ROOT-PASSWORD"
-      price: 20
+      price: 10
   general:
     runInterval: 20000
     callbackSecret: "CHANGE-THIS"

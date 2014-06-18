@@ -14,7 +14,7 @@ This repository is the backend behind http://fullnode.co
 
 1. The visitor is able to choose a name for his server
 2. If the DNS is available, he will be opted to click the 'Pay with Bitcoin' coinbase button
-3. Once the payment is done ($20) the app will get a callback from Coinbase that a payment was made along with the requested DNS name
+3. Once the payment is done ($10) the app will get a callback from Coinbase that a payment was made along with the requested DNS name
 4. The app will then start the provisioning process which also includes the setup of the new DNS record.
 5. Once done, all data will be pushed to a joola.io instance. This will allow us to update the charts/tables on the website in real-time with the creation of the new server.
 

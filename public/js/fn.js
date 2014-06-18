@@ -28,7 +28,9 @@ $('#servername').keyup(function () {
 
 $('#setdns').on('click', function () {
   $.post('/setdns', {"dns": sname, "userid": userid}, function () {
-    window.location = "/?dnsset=1";
+    window.location = "/servers?userid=" + userid;
+  }).fail(function (data) {
+    console.log("error", data);
   });
 })
 
@@ -48,9 +50,9 @@ $(document).ready(function () {
   });
 
   $(document).on('coinbase_payment_complete', function (event, code) {
-    setTimeout(function() {
+    setTimeout(function () {
       window.location = "/dns/" + uuid;
-    },1000);
-    
+    }, 1000);
+
   });
 });
