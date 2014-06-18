@@ -138,10 +138,10 @@ router.post('/setdns', function (req, res) {
 router.get('/servers', function (req, res) {
   MongoClient.connect("mongodb://localhost:27017/" + config.mongo.dbname, function (err, db) {
     var server = db.collection('serverqueue');
-    server.find({"provisioned": 1}).sort({"timestamp":-1}, function (err, result) {
-      console.log(result.toArray(function (err, servers) {
+    server.find({"provisioned": 1}).sort({"timestamp": -1}, function (err, result) {
+      result.toArray(function (err, servers) {
         res.render('servers', { title: 'Fullnode.co - Server list', serverlist: servers, moment: moment });
-      }));
+      });
     });
   });
 });

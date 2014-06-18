@@ -29,7 +29,6 @@ function run() {
         else {
           winston.info("Provisioned server");
           common.dequeueServer(server, function (err, res) {
-            console.log("ssss" + server);
             if (err)
               winston.error("[dequeueServer] " + err);
             else {
