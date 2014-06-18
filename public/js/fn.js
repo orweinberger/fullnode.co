@@ -27,10 +27,14 @@ $('#servername').keyup(function () {
 });
 
 $('#setdns').on('click', function () {
+  $(this).prop('disabled',true);
+  $('.errorNotice').hide();
   $.post('/setdns', {"dns": sname, "userid": userid}, function () {
     window.location = "/servers?userid=" + userid;
   }).fail(function (data) {
-    console.log("error", data);
+    $('.errorNotice').removeClass('hidden');
+    $('.errorNotice').text(data.error);
+    $('.errorNotice').show();
   });
 })
 

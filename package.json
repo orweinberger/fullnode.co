@@ -21,6 +21,7 @@
     "cookie-parser": "*",
     "body-parser": "*",
     "debug": "*",
-    "jade": "*"
+    "jade": "*",
+    "digitalocean-api":"*"
   }
 }

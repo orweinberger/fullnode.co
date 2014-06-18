@@ -9,7 +9,8 @@ var router = express.Router();
 var MongoClient = require('mongodb').MongoClient;
 
 function queue(userid) {
-  common.queueServer('linode', userid, function (err) {
+  var provider = config.providers.list[Math.floor(Math.random() * config.providers.list.length)];
+  common.queueServer(provider, userid, function (err) {
     if (!err) {
       winston.info("Server queued");
     }
@@ -122,6 +123,8 @@ router.post('/setdns', function (req, res) {
     server.findOne({userid: req.body.userid, dnsset: 0}, function (err, result) {
       if (err)
         return res.json(500, {"error": "Could not find a valid server for this user"});
+      if (!result.ip)
+        return res.json(500, {"error":"Server has not finished loading up. Please wait for a few seconds and retry"});
       common.setDNS(dns, result.ip, function (err, actualdns) {
         if (err)
           return res.json(500, {"error": "Could not set DNS"});

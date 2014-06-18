@@ -8,6 +8,10 @@ block content
   .col-md-12
     .container
       hr
+
+      span.errorNotice.hidden 
+      br
+      
       .nameyourserver
         .col-md-8
           .spinner
@@ -16,6 +20,7 @@ block content
           .dnsfail.fa.fa-times
           input#servername(type="text", placeholder="Name your server")
           | .fullnode.co
-          button#setdns.btn.btn-success(disabled) Submit        
+          
+          button#setdns.btn.btn-success.pull-right(disabled) Submit        
   script.
     var userid = '#{userid}';

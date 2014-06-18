@@ -2,12 +2,11 @@ var config = require('config').dev;
 var joola = require('./lib/joola')
 var common = require('./lib/common');
 var linode = require('./lib/providers/linode');
+var digitalocean = require('./lib/providers/digitalocean');
 var winston = require('winston');
 var moment = require('moment');
-
 var express = require('express');
 var path = require('path');
-//var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -23,40 +22,76 @@ function run() {
       winston.error("[getServerQueue] " + err);
     else if (server) {
       winston.info("Got server queue");
-      linode.provisionServer(server, function (err, srv) {
-        if (err)
-          winston.error("[provisionServer] " + err);
-        else {
-          winston.info("Provisioned server");
-          common.dequeueServer(server, function (err, res) {
-            if (err)
-              winston.error("[dequeueServer] " + err);
-            else {
-              winston.info("dequeued Server");
-
-              MongoClient.connect("mongodb://localhost:27017/" + config.mongo.dbname, function (err, db) {
-                if (err)
-                  winston.error("[mongoUpdate] " + err);
-                var sq = db.collection('serverqueue');
-                sq.update({userid: server.userid}, {$set: {"ip": srv.ip, "dc": srv.dc, "serverid": srv.serverid, "deleted":0}}, function (err, result) {
+      if (server.provider == 'Linode') {
+        linode.provisionServer(server, function (err, srv) {
+          if (err)
+            winston.error("[provisionServer] " + err);
+          else {
+            winston.info("Provisioned server");
+            common.dequeueServer(server, function (err, res) {
+              if (err)
+                winston.error("[dequeueServer] " + err);
+              else {
+                winston.info("dequeued Server");
+                MongoClient.connect("mongodb://localhost:27017/" + config.mongo.dbname, function (err, db) {
                   if (err)
                     winston.error("[mongoUpdate] " + err);
-                  else {
-                    joola.beacon(config.joola.collection, {"timestamp": null, "servers": 1, "ipaddress": srv.ip, "dc": srv.dc, "serverid": srv.serverid}, function (err, doc) {
-                      if (err)
-                        winston.error("[beacon] " + err);
-                      else {
-                        winston.info("Pushed data into joola");
-                        winston.info(doc);
-                      }
-                    });
-                  }
+                  var sq = db.collection('serverqueue');
+                  sq.update({userid: server.userid}, {$set: {"ip": srv.ip, "dc": srv.dc, "serverid": srv.serverid, "deleted": 0}}, function (err, result) {
+                    if (err)
+                      winston.error("[mongoUpdate] " + err);
+                    else {
+                      joola.beacon(config.joola.collection, {"timestamp": null, "servers": 1, "ipaddress": srv.ip, "dc": srv.dc, "serverid": srv.serverid}, function (err, doc) {
+                        if (err)
+                          winston.error("[beacon] " + err);
+                        else {
+                          winston.info("Pushed data into joola");
+                          winston.info(doc);
+                        }
+                      });
+                    }
+                  });
                 });
-              });
-            }
-          });
-        }
-      });
+              }
+            });
+          }
+        });
+      }
+      else if (server.provider == 'DigitalOcean') {
+        digitalocean.provisionServer(server, function (err, srv) {
+          if (err)
+            winston.error("[provisionServer] " + err);
+          else {
+            winston.info("Provisioned server");
+            common.dequeueServer(server, function (err, res) {
+              if (err)
+                winston.error("[dequeueServer] " + err);
+              else {
+                winston.info("dequeued Server");
+                MongoClient.connect("mongodb://localhost:27017/" + config.mongo.dbname, function (err, db) {
+                  if (err)
+                    winston.error("[mongoUpdate] " + err);
+                  var sq = db.collection('serverqueue');
+                  sq.update({userid: server.userid}, {$set: {"ip": srv.ip_address, "dc": srv.region_name, "serverid": srv.droplet_id, "deleted": 0}}, function (err, result) {
+                    if (err)
+                      winston.error("[mongoUpdate] " + err);
+                    else {
+                      joola.beacon(config.joola.collection, {"timestamp": null, "servers": 1, "ipaddress": srv.ip_address, "dc": srv.region_name, "serverid": srv.droplet_id}, function (err, doc) {
+                        if (err)
+                          winston.error("[beacon] " + err);
+                        else {
+                          winston.info("Pushed data into joola");
+                          winston.info(doc);
+                        }
+                      });
+                    }
+                  });
+                });
+              }
+            });
+          }
+        });
+      }
     }
   });
 }

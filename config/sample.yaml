@@ -12,6 +12,10 @@ dev:
       apikey: "LINODE-API-KEY"
       rootpass: "ROOT-PASSWORD"
       price: 3
+    digitalocean:
+      clientid: "DIGITALOCEAN-CLIENT-ID"
+      apikey: "DIGITALOCEAN-API-KEY"
+      price: 3
   general:
     runInterval: 20000
     callbackSecret: "CHANGE-THIS"
@@ -31,6 +35,10 @@ prod:
       apikey: "LINODE-API-KEY"
       rootpass: "ROOT-PASSWORD"
       price: 10
+    digitalocean:
+      clientid: "DIGITALOCEAN-CLIENT-ID"
+      apikey: "DIGITALOCEAN-API-KEY"
+      price: 10  
   general:
     runInterval: 20000
     callbackSecret: "CHANGE-THIS"
