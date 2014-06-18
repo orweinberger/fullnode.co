@@ -48,7 +48,9 @@ $(document).ready(function () {
   });
 
   $(document).on('coinbase_payment_complete', function (event, code) {
-    console.log("Payment completed for button " + code);
-    window.location = "/dns/" + uuid;
+    setTimeout(function() {
+      window.location = "/dns/" + uuid;
+    },1000);
+    
   });
 });
