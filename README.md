@@ -12,12 +12,11 @@ This repository is the backend behind http://fullnode.co
 
 ### How does it work?
 
-1. The visitor is able to choose a name for his server
-2. If the DNS is available, he will be opted to click the 'Pay with Bitcoin' coinbase button
-3. Once the payment is done ($10) the app will get a callback from Coinbase that a payment was made along with the requested DNS name
-4. The app will then start the provisioning process which also includes the setup of the new DNS record.
-5. Once done, all data will be pushed to a joola.io instance. This will allow us to update the charts/tables on the website in real-time with the creation of the new server.
-
+1. A visitor to the webpage is presented with a Coinbase button asking him to donate $10
+2. Once a payment is sent through, Coinbase will reach out via HTTP to our callback url triggering a new server provision.
+3. After the server provision process starts, the visitor will be redirected to another page that will allow him to select a DNS for his new full node
+4. If the DNS name is free, it will be set and the visitor will be redirected to the server list page where he can view his new server.
+5. Server details will be also pushed to joola.io so we can draw some usage graphs.
 
 ### Contribute to this project
 
@@ -29,10 +28,8 @@ If you have any ideas for new features, please create an issue.
 
 ### Roadmap
 
-1. Add more providers, namely DigitalOcean and possibly Vultr
-2. Add tests
-3. Generate an address per visitor instead of one pool. This will allow cool features such as donating money to provision a node and allowing the donor to specify a unique DNS record such as reddit.fullnode.co. If we keep all BTC under one address it will make it very difficult to achieve this specific feature.
-
+1. Add tests
+2. Add more providers
 
 ### Buy me a beer
 
