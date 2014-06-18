@@ -1,12 +1,6 @@
 .nameyourserver {
   font-size:22px;
 }
-
-#coinbaseimage {
-  opacity:0.7
-}
-
-
 .dnsok, .dnsfail, .spinner {
   display: none;
   float:left;

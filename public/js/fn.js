@@ -32,10 +32,9 @@ $('#setdns').on('click', function () {
   $.post('/setdns', {"dns": sname, "userid": userid}, function () {
     window.location = "/servers?userid=" + userid;
   }).fail(function (data) {
-    $('.errorNotice').text(data.error);
+    var response = JSON.parse(data.responseText);
+    $('.errorNotice').text(JSON.parse(response.error));
     $('.errorNotice').removeClass('hidden');
-    console.log(data);
-    
     $('.errorNotice').show();
   });
 })

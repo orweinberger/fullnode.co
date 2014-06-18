@@ -8,39 +8,45 @@ dev:
     apitoken: "apitoken-demo"
     collection: dev_bitcoin
   providers:
+    list:
+      - "Linode"
+      - "DigitalOcean"
     linode:
       apikey: "LINODE-API-KEY"
-      rootpass: "ROOT-PASSWORD"
-      price: 3
+      rootpass: "DESIRED-ROOT-PASSWORD"
+      price: 2
     digitalocean:
-      clientid: "DIGITALOCEAN-CLIENT-ID"
+      clientid: "DIGITALOCEAN-CLIENTID"
       apikey: "DIGITALOCEAN-API-KEY"
-      price: 3
+      price: 2
   general:
     runInterval: 20000
     callbackSecret: "CHANGE-THIS"
   coinbase:
-    buttonid: "1ec2d26bf6c385c40d2148253d5a4df2"
+    buttonid: "COINBASE-BUTTON-ID"
 prod:
   mongo:
     host: localhost
     port: 27017
-    dbname: fullnode
+    dbname: prod_fullnode
   joola:
     host: "http://localhost:8080"
     apitoken: "apitoken-demo"
-    collection: bitcoin
+    collection: prod_bitcoin
   providers:
+    list:
+      - "Linode"
+      - "DigitalOcean"
     linode:
       apikey: "LINODE-API-KEY"
-      rootpass: "ROOT-PASSWORD"
-      price: 10
+      rootpass: "DESIRED-ROOT-PASSWORD"
+      price: 3
     digitalocean:
-      clientid: "DIGITALOCEAN-CLIENT-ID"
+      clientid: "DIGITALOCEAN-CLIENTID"
       apikey: "DIGITALOCEAN-API-KEY"
-      price: 10  
+      price: 10
   general:
     runInterval: 20000
     callbackSecret: "CHANGE-THIS"
   coinbase:
-    buttonid: "1ec2d26bf6c385c40d2148253d5a4df2"
+    buttonid: "COINBASE-BUTTON-ID"
