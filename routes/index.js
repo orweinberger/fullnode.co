@@ -24,7 +24,7 @@ router.get('/', function (req, res) {
     if (err)
       return res.json(500, {"error": "Could not connect to database"});
     var User = db.collection('users');
-    User.insert({timestamp: new Date(), userid: uuid}, {w: 1}, function (err, result) {
+    User.insert({timestamp: new Date(), userid: uuid, dnsset: 0}, {w: 1}, function (err, result) {
       if (err)
         return res.json(500, {"error": "Could not insert user to database"});
       return res.render('index', { title: 'Fullnode.co - Adopt a full node', uuid: uuid });
@@ -88,7 +88,7 @@ router.param('userid', function (req, res, next, id) {
     var sq = db.collection('serverqueue');
     sq.findOne({userid: id, dnsset: 0}, function (err, result) {
       if (err)
-        return res.json(403, {"error": "You have already selected a DNS name for your server"});
+        return res.json(403, {"error": "Could not search the database"});
       if (result) {
         req.userid = result.userid;
         return next();

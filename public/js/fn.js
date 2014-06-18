@@ -12,7 +12,6 @@ $('#servername').keyup(function () {
   }
   else {
     $.post('/dnscheck', {"dns": sname}, function (data, status) {
-      $('.coinbase-button').attr('data-custom', uuid);
       $('.spinner').hide();
       $('.dnsfail').hide();
       $('.dnsok').show();
