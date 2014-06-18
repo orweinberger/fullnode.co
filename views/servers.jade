@@ -23,10 +23,10 @@ block content
                   td #{server.dns}.fullnode.co
                 td #{server.ip}
                 td #{server.provider}
-                if server.provisioned == '1'
-                  td Live
-                else
+                if server.deleted == '1'
                   td Offline
+                else
+                  td Live
                 td #{server.dc}
                 td #{moment(server.timestamp).add('days',30).fromNow()}
                 
