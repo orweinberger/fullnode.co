@@ -1,0 +1,29 @@
+extends layout
+block content
+  .col-md-12
+    .container
+      h2 Server listing
+      .servers
+        table.table.table-striped.text-center
+          thead
+            th.text-center Creation date
+            th.text-center DNS
+            th.text-center IP
+            th.text-center Provider
+            th.text-center Status
+            th.text-center Location
+            th.text-center TTL
+          tbody
+            for server in serverlist
+              tr
+                td #{moment(server.timestamp).format("YYYY-MM-DD HH:mm")}
+                td #{server.dns}.fullnode.co
+                td #{server.ip}
+                td #{server.provider}
+                if server.provisioned == '1'
+                  td Live
+                else
+                  td Offline
+                td #{server.dc}
+                td #{moment(server.timestamp).add('days',30).fromNow()}
+                

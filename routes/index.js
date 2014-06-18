@@ -125,7 +125,7 @@ router.post('/setdns', function (req, res) {
       common.setDNS(dns, result.ip, function (err) {
         if (err)
           return res.json(500, {"error": "Could not set DNS"});
-        server.update({userid: req.body.userid, dnsset: 0}, {$set: {dnsset: 1}}, function (err, result) {
+        server.update({userid: req.body.userid, dnsset: 0}, {$set: {dnsset: 1, dns: dns}}, function (err, result) {
           if (err)
             return res.json(500, {"error": "Could not update dnsset=1"});
           return res.send(200);
@@ -133,7 +133,17 @@ router.post('/setdns', function (req, res) {
       });
     })
   });
+});
 
+router.get('/servers', function (req, res) {
+  MongoClient.connect("mongodb://localhost:27017/" + config.mongo.dbname, function (err, db) {
+    var server = db.collection('serverqueue');
+    server.find({"provisioned": 1}, function (err, result) {
+      console.log(result.toArray(function (err, servers) {
+        res.render('servers', { title: 'Fullnode.co - Server list', serverlist: servers, moment: moment });
+      }));
+    });
+  });
 });
 
 module.exports = router;
