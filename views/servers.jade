@@ -15,18 +15,34 @@ block content
             th.text-center TTL
           tbody
             for server in serverlist
-              tr(id="#{server.userid}")
-                td #{moment(server.timestamp).format("YYYY-MM-DD HH:mm")}
-                if (!server.dns)
-                  td Not set
-                else
-                  td #{server.dns}.fullnode.co
-                td #{server.ip}
-                td #{server.provider}
-                if server.deleted == '1'
-                  td Offline
-                else
-                  td Live
-                td #{server.dc}
-                td #{moment(server.timestamp).add('days',30).fromNow()}
-                
+              if server.deleted == '1'
+                tr(id="#{server.userid}" class="offline")
+                  td #{moment(server.timestamp).format("YYYY-MM-DD HH:mm")}
+                  if (!server.dns)
+                    td Not set
+                  else
+                    td #{server.dns}.fullnode.co
+                  td #{server.ip}
+                  td #{server.provider}
+                  if server.deleted == '1'
+                    td Offline
+                  else
+                    td Live
+                  td #{server.dc}
+                  td #{moment(server.timestamp).add('days',30).fromNow()}
+              else
+                tr(id="#{server.userid}")
+                  td #{moment(server.timestamp).format("YYYY-MM-DD HH:mm")}
+                  if (!server.dns)
+                    td Not set
+                  else
+                    td #{server.dns}.fullnode.co
+                  td #{server.ip}
+                  td #{server.provider}
+                  if server.deleted == '1'
+                    td Offline
+                  else
+                    td Live
+                  td #{server.dc}
+                  td #{moment(server.timestamp).add('days',30).fromNow()}
+                  

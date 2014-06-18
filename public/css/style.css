@@ -22,3 +22,7 @@
 .highlight > td {
   background-color:#FFB8B8 !important;
 }
+
+.offline {
+  opacity:0.3;
+}
