@@ -100,7 +100,7 @@ router.param('userid', function (req, res, next, id) {
         return next();
       }
       else
-        return res.json(403, {"error": "Could not find user"});
+        return res.json(403, {"error": "Could not find user. Coinbase can sometime take a few seconds to let us know that a payment went through, try refreshing this page every few seconds until it loads correctly."});
     });
   });
 });
@@ -138,7 +138,7 @@ router.post('/setdns', function (req, res) {
 router.get('/servers', function (req, res) {
   MongoClient.connect("mongodb://localhost:27017/" + config.mongo.dbname, function (err, db) {
     var server = db.collection('serverqueue');
-    server.find({"provisioned": 1}, function (err, result) {
+    server.find({"provisioned": 1}).sort({"timestamp":-1}, function (err, result) {
       console.log(result.toArray(function (err, servers) {
         res.render('servers', { title: 'Fullnode.co - Server list', serverlist: servers, moment: moment });
       }));

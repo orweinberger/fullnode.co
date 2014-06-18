@@ -18,3 +18,7 @@
   width:30px;
   height:30px;
 }
+
+.highlight > td {
+  background-color:#FFB8B8 !important;
+}
