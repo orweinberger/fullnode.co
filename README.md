@@ -1,6 +1,4 @@
-# fullnode.co (alpha)
-
-This repository is the backend behind http://fullnode.co
+# fullnode.co (beta)
 
 ### Requirements
 
