@@ -101,7 +101,7 @@ router.param('userid', function (req, res, next, id) {
         return next();
       }
       else
-        return res.json(403, {"error": "Could not find user. Coinbase can sometime take a few seconds to let us know that a payment went through, try refreshing this page every few seconds until it loads correctly."});
+        return res.json(403, {"error": "Try refreshing this page every few seconds. We're experiencing a slowdown due to high volumes."});
     });
   });
 });
