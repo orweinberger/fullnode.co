@@ -33,7 +33,7 @@ block content
     var serverCount_timeline_query = {
     "timeframe": "last_day",
     "interval": "hour",
-    "collection": "dev_bitcoin",
+    "collection": "prod_bitcoin",
     "dimensions": ["timestamp"],
     "metrics": ["servers"],
     "realtime": true
@@ -42,7 +42,7 @@ block content
     var dc_pie_query = {
     "timeframe": "last_month",
     "interval": "day",
-    "collection": "dev_bitcoin",
+    "collection": "prod_bitcoin",
     "dimensions": ["dc"],
     "metrics": ["servers"],
     "realtime": true
@@ -51,7 +51,7 @@ block content
     var last_month_server_query = {
     "timeframe":"last_month",
     "interval":"day",
-    "collection":"dev_bitcoin",
+    "collection":"prod_bitcoin",
     "dimensions":["ipaddress"],
     "metrics":["servers"],
     "realtime":true
@@ -61,7 +61,7 @@ block content
     var last_all_server_query = {
     "timeframe":"last_year",
     "interval":"day",
-    "collection":"dev_bitcoin",
+    "collection":"prod_bitcoin",
     "dimensions":["ipaddress"],
     "metrics":["servers"],
     "realtime":true
