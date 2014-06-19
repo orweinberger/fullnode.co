@@ -27,7 +27,8 @@ $('#servername').keyup(function () {
 });
 
 $('#setdns').on('click', function () {
-  $(this).prop('disabled',true);
+  var btn = $(this);
+  btn.prop('disabled',true);
   $('.errorNotice').hide();
   $.post('/setdns', {"dns": sname, "userid": userid}, function () {
     window.location = "/servers?userid=" + userid;
@@ -36,7 +37,7 @@ $('#setdns').on('click', function () {
     $('.errorNotice').text(response.error);
     $('.errorNotice').removeClass('hidden');
     $('.errorNotice').show();
-    $(this).prop('disabled',false);
+    btn.prop('disabled',false);
   });
 })
 
