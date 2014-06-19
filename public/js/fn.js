@@ -33,7 +33,7 @@ $('#setdns').on('click', function () {
     window.location = "/servers?userid=" + userid;
   }).fail(function (data) {
     var response = JSON.parse(data.responseText);
-    $('.errorNotice').text(JSON.parse(response.error));
+    $('.errorNotice').text(response.error);
     $('.errorNotice').removeClass('hidden');
     $('.errorNotice').show();
   });
