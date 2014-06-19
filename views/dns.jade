@@ -11,14 +11,15 @@ block content
 
       span.errorNotice.hidden 
       br
-      
+      strong Alpha-numeric (you can also use dashes), 16 characters max.
+      br
       .nameyourserver
         .col-md-8
           .spinner
             img(src="/img/712.GIF")
           .dnsok.fa.fa-check
           .dnsfail.fa.fa-times
-          input#servername(type="text", placeholder="Name your server")
+          input#servername(type="text", placeholder="Name your server", maxlength="16")
           | .fullnode.co
           
           button#setdns.btn.btn-success.pull-right(disabled) Submit        
