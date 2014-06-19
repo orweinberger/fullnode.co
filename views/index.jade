@@ -18,6 +18,86 @@ block content
         .col-md-4.pull-left.text-left
           .coinbase
             input#coinbaseimage(src="https://coinbase.com/assets/buttons/buy_now_large-cac4e1e8d97c83a62dc249573c5afb3f.png", style="width:191px;height:37px;", type="image")
-      
+
+    .container
+      .col-md-8
+        #serverCount-timeline
+      .col-md-4
+        #dc-pie
+
+  script(src="http://109.74.194.86:8080/joola.io.js")
   script.
     var uuid = '#{uuid}';
+    var options = { "APIToken":"apitoken-reader" }
+    joolaio.init(options,function(err,res) {
+    var serverCount_timeline_query = {
+    "timeframe": "last_day",
+    "interval": "hour",
+    "collection": "dev_bitcoin",
+    "dimensions": ["timestamp"],
+    "metrics": ["servers"],
+    "realtime": true
+    }
+    
+    var dc_pie_query = {
+    "timeframe": "last_month",
+    "interval": "day",
+    "collection": "dev_bitcoin",
+    "dimensions": ["dc"],
+    "metrics": ["servers"],
+    "realtime": true
+    }
+    
+    var last_month_server_query = {
+    "timeframe":"last_month",
+    "interval":"day",
+    "collection":"dev_bitcoin",
+    "dimensions":["ipaddress"],
+    "metrics":["servers"],
+    "realtime":true
+    
+    }
+    
+    var last_all_server_query = {
+    "timeframe":"last_year",
+    "interval":"day",
+    "collection":"dev_bitcoin",
+    "dimensions":["ipaddress"],
+    "metrics":["servers"],
+    "realtime":true
+    }
+    
+    $('#serverCount-timeline').Timeline({force: true,
+    
+    chart: {
+    
+    chart: {
+    
+    type: 'line'
+    
+    },
+    
+    plotOptions: {
+    
+    line: {
+    
+    color: 'rgba(87,173,104,0.8)',
+    
+    pointWidth: 15
+    
+    }
+    
+    }
+    
+    },query:serverCount_timeline_query});
+    $('#dc-pie').Pie({query:dc_pie_query});
+    //$('#serverCountMonth-metric').Metric({query:last_month_server_query});
+    //$('#serverCountAll-metric').Metric({query:last_all_server_query});
+    });
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-51194133-1', 'fullnode.co');
+    ga('send', 'pageview');
