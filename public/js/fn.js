@@ -51,7 +51,7 @@ $(document).ready(function () {
       $(document).trigger('coinbase_show_modal', '0b41e454a8d32f1096e8dd90d45d03ff');
       $(button).prop('disabled', false);
       return false;
-    }, 1500);
+    }, 2000);
   });
 
   $(document).on('coinbase_payment_complete', function (event, code) {
