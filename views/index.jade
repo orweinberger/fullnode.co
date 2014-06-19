@@ -7,8 +7,9 @@ block content
       p This is an <a href="https://github.com/orweinberger/fullnode.co" target="_blank">open-source</a>, non-profit project aimed to create as many full nodes as possible and to have them last as long as possible.
       p Once you complete the payment of $10 via the Coinbase button below, you will be prompted to select a unique DNS for your server (under *.fullnode.co).
       p After you complete the process a full node will be provisioned for you either on Linode or DigitalOcean (we plan to support more providers in the future).
-      p That full node will be online for a month and in the near future you will be able to 're-fund' the nodes.
+      p Your full node will be online for a month and in the near future you will be able to 're-fund' the nodes.
       p If you have any questions, <a href="/faq">have a look here</a>.
+      p Charts and graphs are powered by <a href="https://joola.io">joola.io</a>
 
   .col-md-12
 
@@ -46,7 +47,9 @@ block content
       "timeframe": "last_month",
       "interval": "day",
       "collection": "prod_bitcoin",
-      "dimensions": ["dc"],
+      "dimensions": [
+        {key: 'dc', collection: 'prod_bitcoin'}
+      ],
       "metrics": ["servers"],
       "realtime": true
     }
