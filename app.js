@@ -1,4 +1,9 @@
-var config = require('config').dev;
+if (process.env.NODE_ENV == 'production') {
+  var config = require('config').prod;
+}
+else
+  var config = require('config').dev;
+
 var joola = require('./lib/joola')
 var common = require('./lib/common');
 var linode = require('./lib/providers/linode');
