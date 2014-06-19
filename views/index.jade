@@ -31,21 +31,24 @@ block content
     var options = { "APIToken":"apitoken-reader" }
     joolaio.init(options,function(err,res) {
     var serverCount_timeline_query = {
-    "timeframe": "last_day",
-    "interval": "hour",
-    "collection": "prod_bitcoin",
-    "dimensions": ["timestamp"],
-    "metrics": ["servers"],
-    "realtime": true
+      "timeframe": "last_day",
+      "interval": "hour",
+      "collection": "prod_bitcoin",
+      //"dimensions": ["timestamp"],
+      "dimensions": [
+        {key: 'timestamp', collection: 'prod_bitcoin'}
+      ],
+      "metrics": ["servers"],
+      "realtime": true
     }
     
     var dc_pie_query = {
-    "timeframe": "last_month",
-    "interval": "day",
-    "collection": "prod_bitcoin",
-    "dimensions": ["dc"],
-    "metrics": ["servers"],
-    "realtime": true
+      "timeframe": "last_month",
+      "interval": "day",
+      "collection": "prod_bitcoin",
+      "dimensions": ["dc"],
+      "metrics": ["servers"],
+      "realtime": true
     }
     
     var last_month_server_query = {
@@ -68,27 +71,17 @@ block content
     }
     
     $('#serverCount-timeline').Timeline({force: true,
-    
     chart: {
-    
-    chart: {
-    
-    type: 'line'
-    
-    },
-    
-    plotOptions: {
-    
-    line: {
-    
-    color: 'rgba(87,173,104,0.8)',
-    
-    pointWidth: 15
-    
-    }
-    
-    }
-    
+      chart: {
+      type: 'line'
+      },
+      
+      plotOptions: {
+        line: {
+          color: 'rgba(87,173,104,0.8)',
+          pointWidth: 15
+        }
+      }
     },query:serverCount_timeline_query});
     $('#dc-pie').Pie({query:dc_pie_query});
     //$('#serverCountMonth-metric').Metric({query:last_month_server_query});

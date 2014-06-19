@@ -36,6 +36,7 @@ $('#setdns').on('click', function () {
     $('.errorNotice').text(response.error);
     $('.errorNotice').removeClass('hidden');
     $('.errorNotice').show();
+    $(this).prop('disabled',false);
   });
 })
 
