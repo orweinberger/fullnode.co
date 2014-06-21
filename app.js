@@ -44,6 +44,7 @@ function run() {
                       winston.error("[mongoUpdate] " + err);
                     var sq = db.collection('serverqueue');
                     sq.update({userid: server.userid}, {$set: {"ip": srv.ip, "dc": srv.dc, "serverid": srv.serverid, "deleted": 0}}, function (err, result) {
+                      db.close();
                       if (err)
                         winston.error("[mongoUpdate] " + err);
                       else {

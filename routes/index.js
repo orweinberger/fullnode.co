@@ -31,6 +31,7 @@ router.get('/', function (req, res) {
       return res.json(500, {"error": "Could not connect to database"});
     var User = db.collection('users');
     User.insert({timestamp: new Date(), userid: uuid, dnsset: 0}, {w: 1}, function (err, result) {
+      db.close();
       if (err)
         return res.json(500, {"error": "Could not insert user to database"});
       return res.render('index', { title: 'Fullnode.co - Adopt a full node', uuid: uuid });
@@ -77,6 +78,7 @@ router.post('/callback', function (req, res) {
           if (err)
             return res.send(500);
           sq.findOne({userid: userid}, function (err, result) {
+            db.close();
             //This is a hack since Coinbase sometimes gets an error when calling the callback url. Coinbase will re-attempt any errored callbacks but we need to make sure the server was not already created.
             if (result)
               return res.send(200);
@@ -99,6 +101,7 @@ router.param('userid', function (req, res, next, id) {
       return res.json(500, {"error": "Could not connect to database"});
     var sq = db.collection('serverqueue');
     sq.findOne({userid: id, dnsset: 0}, function (err, result) {
+      db.close();
       if (err)
         return res.json(403, {"error": "Could not search the database"});
       if (result) {
@@ -134,6 +137,7 @@ router.post('/setdns', function (req, res) {
         if (err)
           return res.json(500, {"error": "Could not set DNS"});
         server.update({userid: req.body.userid, dnsset: 0}, {$set: {dnsset: 1, dns: actualdns}}, function (err, result) {
+          db.close();
           if (err)
             return res.json(500, {"error": "Could not update dnsset=1"});
           return res.send(200);
@@ -147,6 +151,7 @@ router.get('/servers', function (req, res) {
   MongoClient.connect("mongodb://localhost:27017/" + config.mongo.dbname, function (err, db) {
     var server = db.collection('serverqueue');
     server.find({"provisioned": 1}).sort({"timestamp": -1}, function (err, result) {
+      db.close();
       result.toArray(function (err, servers) {
         res.render('servers', { title: 'Fullnode.co - Server list', serverlist: servers, moment: moment });
       });
