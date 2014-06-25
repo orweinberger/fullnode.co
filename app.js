@@ -21,6 +21,8 @@ var debug = require('debug')('generated-express-app');
 
 var MongoClient = require('mongodb').MongoClient;
 
+process.env.RUNNING = 0;
+
 function run() {
   if (process.env.RUNNING == '0') {
     common.getServerQueue(function (err, server) {
