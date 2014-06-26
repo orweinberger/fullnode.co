@@ -7,7 +7,7 @@ block content
       p This is an <a href="https://github.com/orweinberger/fullnode.co" target="_blank">open-source</a>, non-profit project aimed to create as many full nodes as possible and to have them last as long as possible.
       p Once you complete the payment of $10 via the Coinbase button below, you will be prompted to select a unique DNS for your server (under *.fullnode.co).
       p After you complete the process a full node will be provisioned for you either on Linode or DigitalOcean (we plan to support more providers in the future).
-      p Your full node will be online for a month and in the near future you will be able to 're-fund' the nodes.
+      p Your full node will be online for a month and in the near future you will be able to top-up the nodes.
       p If you have any questions, <a href="/faq">have a look here</a>.
       p Charts and graphs are powered by <a href="https://joola.io">joola.io</a>
       p <a href="/servers">Complete server list</a>
@@ -17,10 +17,10 @@ block content
 
     .container
       hr
-      .nameyourserver
-        .col-md-4.pull-left.text-left
-          .coinbase
-            input#coinbaseimage(src="https://coinbase.com/assets/buttons/buy_now_large-cac4e1e8d97c83a62dc249573c5afb3f.png", style="width:191px;height:37px;", type="image")
+      .coinbase
+        a.coinbaselink(href="#")
+          img(src="https://coinbase.com/assets/buttons/buy_now_large-cac4e1e8d97c83a62dc249573c5afb3f.png")
+        div.coinbase-button(data-code="beaf806da0e6de66bf452546a076d172", data-button-style="none")
     br
     .container
       .col-md-8
@@ -42,7 +42,7 @@ block content
         {key: 'timestamp', collection: 'prod_bitcoin'}
       ],
       "metrics": ["servers"],
-      "realtime": true
+      "realtime": false
     }
     
     var dc_pie_query = {
@@ -53,7 +53,7 @@ block content
         {key: 'dc', collection: 'prod_bitcoin'}
       ],
       "metrics": ["servers"],
-      "realtime": true
+      "realtime": false
     }
     
     var last_month_server_query = {
@@ -62,7 +62,7 @@ block content
     "collection":"prod_bitcoin",
     "dimensions":["ipaddress"],
     "metrics":["servers"],
-    "realtime":true
+    "realtime":false
     
     }
     
@@ -72,7 +72,7 @@ block content
     "collection":"prod_bitcoin",
     "dimensions":["ipaddress"],
     "metrics":["servers"],
-    "realtime":true
+    "realtime":false
     }
     
     $('#serverCount-timeline').Timeline({force: true,
@@ -99,3 +99,16 @@ block content
   
     ga('create', 'UA-51194133-1', 'fullnode.co');
     ga('send', 'pageview');
+
+  script(src="http://localhost:3000/socket.io/socket.io.js", type="text/javascript")
+  script.
+      var socket = io.connect('http://localhost:3000');
+      /*
+      socket.on('welcome', function(data) {
+        $('#messages').append('<li>' + data.message + '</li>');
+          socket.emit('i am client', {data: 'foo!'});
+      });
+      */
+      socket.on('#{uuid}', function(data) {
+        window.location = '/dns/#{uuid}';
+      });

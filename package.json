@@ -22,6 +22,8 @@
     "body-parser": "*",
     "debug": "*",
     "jade": "*",
-    "digitalocean-api":"*"
+    "digitalocean-api":"*",
+    "socket.io":"*",
+    "express.io":"*"
   }
 }

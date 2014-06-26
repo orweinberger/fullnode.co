@@ -13,6 +13,7 @@ var express = require('express');
 var router = express.Router();
 var MongoClient = require('mongodb').MongoClient;
 
+
 function queue(userid) {
   var provider = config.providers.list[Math.floor(Math.random() * config.providers.list.length)];
   common.queueServer(provider, userid, function (err) {
@@ -25,6 +26,8 @@ function queue(userid) {
   });
 }
 router.get('/', function (req, res) {
+  var io = require('../sockets').getIO();
+
   var uuid = common.uuid();
   MongoClient.connect("mongodb://localhost:27017/" + config.mongo.dbname, function (err, db) {
     if (err)
@@ -65,6 +68,7 @@ router.post('/dnscheck', function (req, res) {
 
 router.post('/callback', function (req, res) {
   if (req.query.secret == config.general.callbackSecret) {
+    var io = require('../sockets').getIO();
     var order = req.body.order;
     var userid = req.body.order.custom;
     //dns = dns.replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '-')
@@ -82,6 +86,7 @@ router.post('/callback', function (req, res) {
             //This is a hack since Coinbase sometimes gets an error when calling the callback url. Coinbase will re-attempt any errored callbacks but we need to make sure the server was not already created.
             if (result)
               return res.send(200);
+            io.sockets.emit(userid, { paid: 1 });
             queue(userid);
           });
           return res.send(200);
@@ -132,7 +137,7 @@ router.post('/setdns', function (req, res) {
       if (err)
         return res.json(500, {"error": "Could not find a valid server for this user"});
       if (!result.ip)
-        return res.json(500, {"error":"Server has not finished loading up. Please wait for a few seconds and retry"});
+        return res.json(500, {"error": "Server has not finished loading up. Please wait for a few seconds and retry"});
       common.setDNS(dns, result.ip, function (err, actualdns) {
         if (err)
           return res.json(500, {"error": "Could not set DNS"});

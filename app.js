@@ -4,7 +4,7 @@ if (process.env.NODE_ENV == 'production') {
 else
   var config = require('config').dev;
 
-var joola = require('./lib/joola')
+var joola = require('./lib/joola');
 var common = require('./lib/common');
 var linode = require('./lib/providers/linode');
 var digitalocean = require('./lib/providers/digitalocean');
@@ -18,7 +18,6 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var app = express();
 var debug = require('debug')('generated-express-app');
-
 var MongoClient = require('mongodb').MongoClient;
 
 process.env.RUNNING = 0;
@@ -139,9 +138,8 @@ app.use('/', routes);
 
 app.set('port', process.env.PORT || 3000);
 
-var server = app.listen(app.get('port'), function () {
-  debug('Express server listening on port ' + server.address().port);
-});
+var io = require('socket.io').listen(app.listen(3000));
+require('./sockets').setIO(io);
 
 
 module.exports = app;
