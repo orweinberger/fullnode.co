@@ -71,7 +71,6 @@ router.post('/callback', function (req, res) {
     var io = require('../sockets').getIO();
     var order = req.body.order;
     var userid = req.body.order.custom;
-    //dns = dns.replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '-')
     if (order.status == "completed" && order.total_native.cents == config.providers.linode.price * 100) {
       MongoClient.connect("mongodb://localhost:27017/" + config.mongo.dbname, function (err, db) {
         if (err)

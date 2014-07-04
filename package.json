@@ -24,6 +24,8 @@
     "jade": "*",
     "digitalocean-api":"*",
     "socket.io":"*",
-    "express.io":"*"
+    "express.io":"*",
+    "ssh2":"*",
+    "scp2":"*"
   }
 }
