@@ -27,7 +27,6 @@ function queue(userid) {
 }
 router.get('/', function (req, res) {
   var io = require('../sockets').getIO();
-
   var uuid = common.uuid();
   MongoClient.connect("mongodb://localhost:27017/" + config.mongo.dbname, function (err, db) {
     if (err)
@@ -40,7 +39,31 @@ router.get('/', function (req, res) {
       return res.render('index', { title: 'Fullnode.co - Adopt a full node', uuid: uuid });
     });
   });
+});
 
+router.param('server_id', function (req, res, next, id) {
+  req.server_id = id;
+  return next();
+});
+
+router.param('timeframe', function (req, res, next, timeframe) {
+  req.timeframe = timeframe;
+  return next();
+});
+
+router.get('/:server_id/top-up/:timeframe', function (req, res) {
+  var uuid = common.uuid();
+  MongoClient.connect("mongodb://localhost:27017/" + config.mongo.dbname, function (err, db) {
+    if (err)
+      return res.json(500, {"error": "Could not connect to database"});
+    var User = db.collection('serverqueue');
+    User.findOne({userid: req.server_id}, function (err, result) {
+      db.close();
+      if (err)
+        return res.json(500, {"error": "Could not find node"});
+      return res.render('top-up', { title: 'Fullnode.co - Top-up ' + req.server_id, server: result, timeframe: req.timeframe });
+    });
+  });
 });
 
 router.get('/faq', function (req, res) {
@@ -90,6 +113,45 @@ router.post('/callback', function (req, res) {
           });
           return res.send(200);
         });
+      });
+    }
+    else
+      return res.send(200);
+  }
+  else
+    return res.send(403);
+});
+
+router.post('/callback/top-up/:timeframe', function (req, res) {
+  if (req.query.secret == config.general.callbackSecret) {
+    var timeframe;
+    var order = req.body.order;
+    var userid = req.body.order.custom;
+    if (req.timeframe === '1m')
+      timeframe = 1;
+    else if (req.timeframe === '6m')
+      timeframe = 6;
+    else
+      return res.send(500);
+    if (order.status == "completed" && order.total_native.cents == config.providers.linode.price * 100 * timeframe) {
+      MongoClient.connect("mongodb://localhost:27017/" + config.mongo.dbname, function (err, db) {
+        if (err)
+          return res.send(500);
+        var sq = db.collection('serverqueue');
+        sq.findOne({userid: userid}, function (err, data) {
+          if (err)
+            return res.send(500);
+          
+          var orig_date = new Date(data.delete_date);
+          var new_date = moment(orig_date).add('months', timeframe).format();
+          sq.update({userid: userid}, {$set: {delete_date: new_date}}, function (err, result) {
+            db.close();
+            return res.send(200);
+          });
+          
+        });
+        
+        
       });
     }
     else

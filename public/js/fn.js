@@ -51,6 +51,29 @@ $(document).ready(function() {
   });
 });
 
+
+$(document).ready(function() {
+  $('.coinbaselinktopup1m').click(function(){
+    $(document).trigger('coinbase_show_modal', 'f3117e03000fd2654596763a76f41344');
+    return false;
+  });
+
+  $(document).on('coinbase_payment_complete', function(event, code){
+    console.log("Payment completed for button "+code);
+  });
+});
+
+$(document).ready(function() {
+  $('.coinbaselinktopup6m').click(function(){
+    $(document).trigger('coinbase_show_modal', '851c2525c4bc4d9e2a98d25bcea7c052');
+    return false;
+  });
+
+  $(document).on('coinbase_payment_complete', function(event, code){
+    console.log("Payment completed for button "+code);
+  });
+});
+
 function getParameterByName(name) {
   name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
   var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),

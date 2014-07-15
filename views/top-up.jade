@@ -1,0 +1,17 @@
+extends layout
+block content
+  .col-md-12
+    .container
+      h2 Top-up #{server.dns}.fullnode.co
+  .col-md-12
+    .container
+      hr
+      .coinbase
+        if timeframe == '1m'
+          a.coinbaselinktopup1m(href="#")
+            img(src="https://coinbase.com/assets/buttons/buy_now_large-cac4e1e8d97c83a62dc249573c5afb3f.png")
+          div.coinbase-button(data-code="f3117e03000fd2654596763a76f41344", data-button-style="none", data-custom="#{uuid}")
+        else
+          a.coinbaselinktopup6m(href="#")
+            img(src="https://coinbase.com/assets/buttons/buy_now_large-cac4e1e8d97c83a62dc249573c5afb3f.png")
+          div.coinbase-button(data-code="851c2525c4bc4d9e2a98d25bcea7c052", data-button-style="none", data-custom="#{uuid}")

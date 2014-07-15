@@ -27,6 +27,7 @@ process.env.RUNNING = 0;
 process.env.SSH_RUNNING = 0;
 
 function run() {
+  var delete_date = new Date(moment().add('months',1));
   if (process.env.RUNNING == '0') {
     common.getServerQueue(function (err, server) {
       if (err)
@@ -48,7 +49,7 @@ function run() {
                     if (err)
                       winston.error("[mongoUpdate] " + err);
                     var sq = db.collection('serverqueue');
-                    sq.update({userid: server.userid}, {$set: {"ip": srv.ip, "dc": srv.dc, "serverid": srv.serverid, "deleted": 0, "initialrun": 0}}, function (err, result) {
+                    sq.update({userid: server.userid}, {$set: {"ip": srv.ip, "dc": srv.dc, "serverid": srv.serverid, "deleted": 0, "initialrun": 0, "delete_date": delete_date}}, function (err, result) {
                       db.close();
                       if (err)
                         winston.error("[mongoUpdate] " + err);
@@ -84,7 +85,7 @@ function run() {
                     if (err)
                       winston.error("[mongoUpdate] " + err);
                     var sq = db.collection('serverqueue');
-                    sq.update({userid: server.userid}, {$set: {"ip": srv.ip_address, "dc": srv.region_name, "serverid": srv.droplet_id, "deleted": 0, "initialrun": 0}}, function (err, result) {
+                    sq.update({userid: server.userid}, {$set: {"ip": srv.ip_address, "dc": srv.region_name, "serverid": srv.droplet_id, "deleted": 0, "initialrun": 0, "delete_date": delete_date}}, function (err, result) {
                       db.close();
                       if (err)
                         winston.error("[mongoUpdate] " + err);
