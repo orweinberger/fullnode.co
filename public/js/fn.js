@@ -1,7 +1,7 @@
-$('#goal').text(((20/price - balance)*1000).toFixed(1) + 'mBTC');
+$('#goal').text(((20/price - balance)*1000000 + 1).toFixed(0) + ' bits');
 setInterval(function () {
   $.get('/data', function (data) {
-    $('#goal').text(((20/data.price - data.balance)*1000).toFixed(1) + 'mBTC');
+    $('#goal').text(((20/data.price - data.balance)*1000000 + 1).toFixed(0) + ' bits');
     $('#count').text(data.servers.length);
     var servers = data.servers;
     var tbody = $('<tbody></tbody>');
