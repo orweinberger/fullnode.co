@@ -157,7 +157,7 @@ setInterval(function () {
     run();
     runDel();
   });
-}, 20000);
+}, 30000);
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
