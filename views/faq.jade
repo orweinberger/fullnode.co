@@ -1,42 +1,54 @@
-extends layout
-block content
-  .col-md-12
-    .container
-      h2 FAQs
-      p.
-        <strong>Q</strong>: $20 Seems too much, why is this so expensive?
-        <br><br>
-        <strong>A</strong>: Automatically deploying a full Bitcoin requires us to work with server providers that have a wide range of actions that can be used via their API interface.<br>Sure, you can find providers that offer cheaper deals for servers, but we are not able to automatically deploy on these hosts since their API interface is not strong enough for our needs.<br>So, we currently support Linode & DigitalOcean. We would like to support Amazon and Google Compute in the near future as well.      
-      hr
-      p.
-        <strong>Q</strong>: When will you support more server providers?
-        <br><br>
-        <strong>A</strong>: Finding more providers is not an easy task, since we have specific requirements. We need to be able to provision server automatically via API, we need the provision process to be quick and we need the servers to be stable enough and strong enough to run the bitcoin daemon which is very resource consuming.      
-      hr
-      p.
-        <strong>Q</strong>: What if I want to contribute less than $10?
-        <br><br>
-        <strong>A</strong>: You can contribute any amount that you wish, however you will not be able to name the server. At the end of each day we will pool all the non-$20 transactions and provusion the neccessary amount of full nodes. 
-      hr
-      p.
-        <strong>Q</strong>: Can you prove that you are actually deploying a server for each contribution?
-        <br><br>
-        <strong>A</strong>: After you send us the coins, you will be able to see the details of the full node in the <a href="/servers">server list</a>. Additionally each server responds to HTTP holding a banner page indicating that this server was created by fullnode.co.
-      hr
-      p.
-        <strong>Q</strong>: How can we know that you're not using the servers for mining or other stuff?
-        <br><br>
-        <strong>A</strong>: I have yet to find a way to prove this, if you have any ideas please contact me and I will be happy to apply changes to the server images.
-      hr
-      p.
-        <strong>Q</strong>: Centralization is bad, what if Linode/DigitalOcean closes your account?
-        <br><br>
-        <strong>A</strong>: The project is completely open sourced, feel free to contribute to it, open issues if you find any bugs and launch your own fullnode.co website to mitigate centralization.
-      hr
-      p.
-        <strong>Q</strong>: How can I check if the server that was provision is in fact running as a full node?
-        <br><br>
-        <strong>A</strong>: You can take any IP from the server list and check it against https://getaddr.bitnodes.io, please be sure to use the IP address rather than the host since DNS takes time to propagate. 
-  .col-md-12
-    .container
+#faq.modal.fade
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close(type="button", data-dismiss="modal")
+          span(aria-hidden="true") &times;
+          span.sr-only Close
+        h4.modal-title FAQs
+      .modal-body
+        p.
+          <strong>Q</strong>: What's the cost of creating a node on fullnode.co?
+          <br><br>
+          <strong>A</strong>: The price of each node is $20 as it is listed on the websites of the server providers we use. We do not make any profit nor are we affiliated with any of the providers.      
+        hr
+        p.
+          <strong>Q</strong>: $20 Seems too much, why is this so expensive?
+          <br><br>
+          <strong>A</strong>: Deploying a full node automatically requires us to work with server providers that have a wide range of actions that can be used via their API interface.<br>Sure, you can find providers that offer cheaper deals for servers, but we are not able to automatically deploy on these hosts since their API interface is not suitable for our needs.<br>So, we currently support Linode & DigitalOcean.      
+        hr
+        p.
+          <strong>Q</strong>: Still, I'm sure I can get a full node running in less than that!
+          <br><br>
+          <strong>A</strong>: Yes <strong>you can</strong>, however we cannot automate the process for cheaper VPS services. If you're tech savvy, <a href="http://www.reddit.com/r/Bitcoin/comments/2pczzz/calling_out_all_former_full_node_operators/cmvlc59">read this</a> to find out how to install a full node. If you use <a href="http://vultr.com">Vultr</a> you could run a full node for $5/month.      
+        hr
+        p.
       
+          <strong>Q</strong>: What if I want to contribute less than $20?
+          <br><br>
+          <strong>A</strong>: Any amount will do, when the wallet balance reaches the equivalent of $20 in BTC we will create a new full node. 
+        hr
+        p.
+          <strong>Q</strong>: Can you prove that you are actually deploying a server for each contribution?
+          <br><br>
+          <strong>A</strong>: The server list is available at the bottom of our homepage, you can review that list and also go through the transaction log and calculate how many servers should have been deployed.
+        hr
+        p.
+          <strong>Q</strong>: How can we know that you're not using the servers for mining or other stuff?
+          <br><br>
+          <strong>A</strong>: I have yet to find a way to prove this, if you have any ideas please contact me and I will be happy to apply changes to the server images.
+        hr
+        p.
+          <strong>Q</strong>: Centralization is bad, what if Linode/DigitalOcean closes your account?
+          <br><br>
+          <strong>A</strong>: The project is completely open sourced, feel free to contribute to it, open issues if you find any bugs and launch your own fullnode.co website to mitigate centralization.
+        hr
+        p.
+          <strong>Q</strong>: How can I check if the servers that are listed on fullnode.co are actually full nodes?
+          <br><br>
+          <strong>A</strong>: You can take any IP from the server list and check it against https://getaddr.bitnodes.io, please be sure to use the IP address rather than the host since DNS takes time to propagate. 
+      .modal-footer
+        button.btn.btn-default(type="button", data-dismiss="modal") Close
+//
+  h2 FAQs
+  

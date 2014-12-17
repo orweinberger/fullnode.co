@@ -1,0 +1,143 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/node', '/usr/bin/npm', 'install' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.33
+4 verbose node symlink /usr/bin/node
+5 verbose readDependencies using package.json deps
+6 verbose install where, deps [ '/home/orw/dev/fullnode.co',
+6 verbose install   [ 'joola.sdk',
+6 verbose install     'blockchain-wallet',
+6 verbose install     'linode-api',
+6 verbose install     'mongodb',
+6 verbose install     'winston',
+6 verbose install     'moment',
+6 verbose install     'async',
+6 verbose install     'yaml',
+6 verbose install     'config',
+6 verbose install     'express',
+6 verbose install     'serve-favicon',
+6 verbose install     'morgan',
+6 verbose install     'cookie-parser',
+6 verbose install     'body-parser',
+6 verbose install     'debug',
+6 verbose install     'jade',
+6 verbose install     'digitalocean-api',
+6 verbose install     'socket.io',
+6 verbose install     'express.io',
+6 verbose install     'ssh2',
+6 verbose install     'scp2',
+6 verbose install     'node-bitcoin' ] ]
+7 info preinstall nodemaker@0.0.1
+8 warn package.json yaml@0.2.3 No repository field.
+9 verbose readDependencies using package.json deps
+10 verbose already installed skipping winston@* /home/orw/dev/fullnode.co
+11 verbose already installed skipping moment@* /home/orw/dev/fullnode.co
+12 verbose already installed skipping async@* /home/orw/dev/fullnode.co
+13 verbose already installed skipping yaml@* /home/orw/dev/fullnode.co
+14 verbose already installed skipping config@* /home/orw/dev/fullnode.co
+15 verbose already installed skipping express@* /home/orw/dev/fullnode.co
+16 verbose already installed skipping serve-favicon@* /home/orw/dev/fullnode.co
+17 verbose already installed skipping morgan@* /home/orw/dev/fullnode.co
+18 verbose already installed skipping cookie-parser@* /home/orw/dev/fullnode.co
+19 verbose already installed skipping body-parser@* /home/orw/dev/fullnode.co
+20 verbose already installed skipping debug@* /home/orw/dev/fullnode.co
+21 verbose already installed skipping jade@* /home/orw/dev/fullnode.co
+22 verbose already installed skipping digitalocean-api@* /home/orw/dev/fullnode.co
+23 verbose already installed skipping socket.io@* /home/orw/dev/fullnode.co
+24 verbose already installed skipping express.io@* /home/orw/dev/fullnode.co
+25 verbose already installed skipping ssh2@* /home/orw/dev/fullnode.co
+26 verbose already installed skipping scp2@* /home/orw/dev/fullnode.co
+27 verbose cache add [ 'node-bitcoin@*', null ]
+28 verbose cache add name=undefined spec="node-bitcoin@*" args=["node-bitcoin@*",null]
+29 verbose parsed url { protocol: null,
+29 verbose parsed url   slashes: null,
+29 verbose parsed url   auth: null,
+29 verbose parsed url   host: null,
+29 verbose parsed url   port: null,
+29 verbose parsed url   hostname: null,
+29 verbose parsed url   hash: null,
+29 verbose parsed url   search: null,
+29 verbose parsed url   query: null,
+29 verbose parsed url   pathname: 'node-bitcoin@*',
+29 verbose parsed url   path: 'node-bitcoin@*',
+29 verbose parsed url   href: 'node-bitcoin@*' }
+30 verbose cache add name="node-bitcoin" spec="*" args=["node-bitcoin","*"]
+31 verbose parsed url { protocol: null,
+31 verbose parsed url   slashes: null,
+31 verbose parsed url   auth: null,
+31 verbose parsed url   host: null,
+31 verbose parsed url   port: null,
+31 verbose parsed url   hostname: null,
+31 verbose parsed url   hash: null,
+31 verbose parsed url   search: null,
+31 verbose parsed url   query: null,
+31 verbose parsed url   pathname: '*',
+31 verbose parsed url   path: '*',
+31 verbose parsed url   href: '*' }
+32 verbose addNamed [ 'node-bitcoin', '*' ]
+33 verbose addNamed [ null, '*' ]
+34 verbose already installed skipping joola.sdk@https://github.com/joola/joola.sdk/tarball/develop /home/orw/dev/fullnode.co
+35 silly lockFile 0dc1661b-node-bitcoin node-bitcoin@*
+36 verbose lock node-bitcoin@* /home/orw/.npm/0dc1661b-node-bitcoin.lock
+37 silly addNameRange { name: 'node-bitcoin', range: '*', hasData: false }
+38 verbose request where is /node-bitcoin
+39 verbose request registry https://registry.npmjs.org/
+40 verbose request id b51dc9b55f1eb846
+41 verbose url raw /node-bitcoin
+42 verbose url resolving [ 'https://registry.npmjs.org/', './node-bitcoin' ]
+43 verbose url resolved https://registry.npmjs.org/node-bitcoin
+44 verbose request where is https://registry.npmjs.org/node-bitcoin
+45 info trying registry request attempt 1 at 20:21:59
+46 http GET https://registry.npmjs.org/node-bitcoin
+47 verbose already installed skipping blockchain-wallet@* /home/orw/dev/fullnode.co
+48 verbose already installed skipping linode-api@* /home/orw/dev/fullnode.co
+49 verbose already installed skipping mongodb@* /home/orw/dev/fullnode.co
+50 http 404 https://registry.npmjs.org/node-bitcoin
+51 verbose headers { date: 'Mon, 15 Dec 2014 18:23:27 GMT',
+51 verbose headers   server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+51 verbose headers   'content-type': 'application/json',
+51 verbose headers   'cache-control': 'max-age=0',
+51 verbose headers   'content-length': '52',
+51 verbose headers   'accept-ranges': 'bytes',
+51 verbose headers   via: '1.1 varnish',
+51 verbose headers   age: '0',
+51 verbose headers   'x-served-by': 'cache-fra1239-FRA',
+51 verbose headers   'x-cache': 'MISS',
+51 verbose headers   'x-cache-hits': '0',
+51 verbose headers   'x-timer': 'S1418667807.239131,VS0,VE708',
+51 verbose headers   'keep-alive': 'timeout=10, max=50',
+51 verbose headers   connection: 'Keep-Alive' }
+52 silly registry.get cb [ 404,
+52 silly registry.get   { date: 'Mon, 15 Dec 2014 18:23:27 GMT',
+52 silly registry.get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+52 silly registry.get     'content-type': 'application/json',
+52 silly registry.get     'cache-control': 'max-age=0',
+52 silly registry.get     'content-length': '52',
+52 silly registry.get     'accept-ranges': 'bytes',
+52 silly registry.get     via: '1.1 varnish',
+52 silly registry.get     age: '0',
+52 silly registry.get     'x-served-by': 'cache-fra1239-FRA',
+52 silly registry.get     'x-cache': 'MISS',
+52 silly registry.get     'x-cache-hits': '0',
+52 silly registry.get     'x-timer': 'S1418667807.239131,VS0,VE708',
+52 silly registry.get     'keep-alive': 'timeout=10, max=50',
+52 silly registry.get     connection: 'Keep-Alive' } ]
+53 silly lockFile 0dc1661b-node-bitcoin node-bitcoin@*
+54 silly lockFile 0dc1661b-node-bitcoin node-bitcoin@*
+55 error 404 404 Not Found: node-bitcoin
+55 error 404
+55 error 404 'node-bitcoin' is not in the npm registry.
+55 error 404 You should bug the author to publish it
+55 error 404 It was specified as a dependency of 'nodemaker'
+55 error 404
+55 error 404 Maybe try 'npm search bitcoin'
+55 error 404
+55 error 404 Note that you can also install from a
+55 error 404 tarball, folder, or http url, or git url.
+56 error System Linux 3.13.0-40-generic
+57 error command "/usr/bin/node" "/usr/bin/npm" "install"
+58 error cwd /home/orw/dev/fullnode.co
+59 error node -v v0.10.33
+60 error npm -v 1.4.28
+61 error code E404
+62 verbose exit [ 1, true ]

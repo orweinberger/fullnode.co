@@ -12,41 +12,47 @@ dev:
       - "Linode"
       - "DigitalOcean"
     linode:
-      apikey: "LINODE-API-KEY"
+      apikey: "YOUR-API-KEY"
       rootpass: "DESIRED-ROOT-PASSWORD"
-      price: 2
     digitalocean:
-      clientid: "DIGITALOCEAN-CLIENTID"
-      apikey: "DIGITALOCEAN-API-KEY"
-      price: 2
+      clientid: "YOUR-CLIENT-ID"
+      apikey: "YOUR-API-KEY"
   general:
     runInterval: 20000
-    callbackSecret: "CHANGE-THIS"
-  coinbase:
-    buttonid: "COINBASE-BUTTON-ID"
+    coldStorage: 'COLD-STORAGE-ADDRESS'
+    hotStorage: 'HOT-WALLET'
+    cost: 1
+  bitcoind:
+    host: 'localhost'
+    port: '8332'
+    username: 'BITCOIND-USERNAME'
+    password: 'BITCOIND-PASSWORD'
 prod:
   mongo:
-    host: localhost
-    port: 27017
-    dbname: prod_fullnode
+     host: localhost
+     port: 27017
+     dbname: dev_fullnode
   joola:
-    host: "http://localhost:8080"
-    apitoken: "apitoken-demo"
-    collection: prod_bitcoin
+   host: "http://localhost:8080"
+   apitoken: "apitoken-demo"
+   collection: dev_bitcoin
   providers:
-    list:
-      - "Linode"
-      - "DigitalOcean"
-    linode:
-      apikey: "LINODE-API-KEY"
-      rootpass: "DESIRED-ROOT-PASSWORD"
-      price: 3
-    digitalocean:
-      clientid: "DIGITALOCEAN-CLIENTID"
-      apikey: "DIGITALOCEAN-API-KEY"
-      price: 10
+   list:
+     - "Linode"
+     - "DigitalOcean"
+   linode:
+     apikey: "YOUR-API-KEY"
+     rootpass: "DESIRED-ROOT-PASSWORD"
+   digitalocean:
+     clientid: "YOUR-CLIENT-ID"
+     apikey: "YOUR-API-KEY"
   general:
-    runInterval: 20000
-    callbackSecret: "CHANGE-THIS"
-  coinbase:
-    buttonid: "COINBASE-BUTTON-ID"
+   runInterval: 20000
+   coldStorage: 'COLD-STORAGE-ADDRESS'
+   hotStorage: 'HOT-WALLET'
+   cost: 20
+  bitcoind:
+   host: 'localhost'
+   port: '8332'
+   username: 'BITCOIND-USERNAME'
+   password: 'BITCOIND-PASSWORD'

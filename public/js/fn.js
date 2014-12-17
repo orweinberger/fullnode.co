@@ -1,89 +1,25 @@
-var sname;
-$('#servername').keyup(function () {
-  $('.dnsok').hide();
-  $('.dnsfail').hide();
-  $('.spinner').show();
-  sname = $(this).val();
-  if (!$(this).val()) {
-    $('.spinner').hide();
-    $('.dnsok').hide();
-    $('.dnsfail').show();
-    $('#setdns').prop('disabled', true);
-  }
-  else {
-    $.post('/dnscheck', {"dns": sname}, function (data, status) {
-      $('.spinner').hide();
-      $('.dnsfail').hide();
-      $('.dnsok').show();
-      $('#setdns').prop('disabled', false);
-    }).fail(function (data) {
-      $('.spinner').hide();
-      $('.dnsok').hide();
-      $('.dnsfail').show();
-      $('#setdns').prop('disabled', true);
+$('#goal').text(((20/price - balance)*1000).toFixed(1) + 'mBTC');
+setInterval(function () {
+  $.get('/data', function (data) {
+    $('#goal').text(((20/data.price - data.balance)*1000).toFixed(1) + 'mBTC');
+    $('#count').text(data.servers.length);
+    var servers = data.servers;
+    var tbody = $('<tbody></tbody>');
+    servers.forEach(function(server) {
+      var tr = $("<tr></tr>");
+      $(tr).append("<td>" + moment(server.timestamp).fromNow() + "</td>");
+      $(tr).append("<td>" + server.dnsName + '.fullnode.co</td>');
+      $(tr).append("<td>" + server.ip + "</td>");
+      $(tr).append("<td>" + server.provider + "</td>");
+      $(tr).append("<td>" + server.dc + "</td>");
+      $(tr).append("<td>" + moment(server.timestamp).add(30, 'days').fromNow() + "</td>");
+      $(tbody).append(tr);
     });
-  }
-
-});
-
-$('#setdns').on('click', function () {
-  var btn = $(this);
-  btn.prop('disabled', true);
-  $('.errorNotice').hide();
-  $.post('/setdns', {"dns": sname, "userid": userid}, function () {
-    window.location = "/servers?userid=" + userid;
-  }).fail(function (data) {
-    var response = JSON.parse(data.responseText);
-    $('.errorNotice').text(response.error);
-    $('.errorNotice').removeClass('hidden');
-    $('.errorNotice').show();
-    btn.prop('disabled', false);
+    $('.serverlist tbody').remove();
+    $('.serverlist').append(tbody);
   });
-})
-$(document).ready(function() {
-  $('.coinbaselink').click(function(){
-    $(document).trigger('coinbase_show_modal', '0b41e454a8d32f1096e8dd90d45d03ff');
-    return false;
-  });
+}, 10000);
 
-  $(document).on('coinbase_payment_complete', function(event, code){
-    console.log("Payment completed for button "+code);
-  });
-});
-
-
-$(document).ready(function() {
-  $('.coinbaselinktopup1m').click(function(){
-    $(document).trigger('coinbase_show_modal', 'f3117e03000fd2654596763a76f41344');
-    return false;
-  });
-
-  $(document).on('coinbase_payment_complete', function(event, code){
-    console.log("Payment completed for button "+code);
-  });
-});
-
-$(document).ready(function() {
-  $('.coinbaselinktopup6m').click(function(){
-    $(document).trigger('coinbase_show_modal', '851c2525c4bc4d9e2a98d25bcea7c052');
-    return false;
-  });
-
-  $(document).on('coinbase_payment_complete', function(event, code){
-    console.log("Payment completed for button "+code);
-  });
-});
-
-function getParameterByName(name) {
-  name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-  var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-    results = regex.exec(location.search);
-  return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-}
-
-$(document).on('ready', function () {
-  if ($('.servers').length > 0) {
-    var userid = getParameterByName('userid');
-    $('#' + userid).addClass('highlight');
-  }
+$('#loadfaq').on('click', function() {
+  $('#faq').modal();
 });

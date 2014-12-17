@@ -18,16 +18,39 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var app = express();
 var debug = require('debug')('generated-express-app');
-var MongoClient = require('mongodb').MongoClient;
-
-var ssh = require('ssh2');
-var scp = require('scp2')
+var mongo = require('./lib/mongo');
 
 process.env.RUNNING = 0;
-process.env.SSH_RUNNING = 0;
+
+var price = 50000;
+var balance = 0;
+
+function check(callback) {
+  common.getPrice(function (err, data) {
+    if (err) winston.error('[getPrice] ' + err);
+    else {
+      mongo.insert('price', { price: data, source: 'bitstamp', timestamp: new Date()}, function (err) {
+        if (err) winston.error('[insert getPrice] ' + err);
+        price = data;
+        winston.info('Inserted price', data);
+        common.getBalance(function (err, data) {
+          if (err) winston.error('[getBalance] ' + err);
+          else {
+            mongo.insert('balance', { balance: data, timestamp: new Date()}, function (err) {
+              if (err) winston.error('[insert getBalance] ' + err);
+              balance = data;
+              winston.info('Inserted balance', data);
+              return callback();
+            });
+          }
+        });
+      });
+    }
+  });
+}
 
 function run() {
-  var delete_date = new Date(moment().add('months',1));
+  var delete_date = new Date(moment().add(1, 'months'));
   if (process.env.RUNNING == '0') {
     common.getServerQueue(function (err, server) {
       if (err)
@@ -36,8 +59,10 @@ function run() {
         winston.info("Got server queue");
         if (server.provider == 'Linode') {
           linode.provisionServer(server, function (err, srv) {
-            if (err)
+            if (err) {
+              process.env.RUNNING = '0';
               winston.error("[provisionServer] " + err);
+            }
             else {
               winston.info("Provisioned server");
               common.dequeueServer(server, function (err, res) {
@@ -45,25 +70,18 @@ function run() {
                   winston.error("[dequeueServer] " + err);
                 else {
                   winston.info("dequeued Server");
-                  MongoClient.connect("mongodb://localhost:27017/" + config.mongo.dbname, function (err, db) {
-                    if (err)
-                      winston.error("[mongoUpdate] " + err);
-                    var sq = db.collection('serverqueue');
-                    sq.update({userid: server.userid}, {$set: {"ip": srv.ip, "dc": srv.dc, "serverid": srv.serverid, "deleted": 0, "initialrun": 0, "delete_date": delete_date}}, function (err, result) {
-                      db.close();
-                      if (err)
-                        winston.error("[mongoUpdate] " + err);
-                      else {
-                        joola.beacon(config.joola.collection, {"timestamp": null, "servers": 1, "ipaddress": srv.ip, "dc": srv.dc, "serverid": srv.serverid}, function (err, doc) {
-                          if (err)
-                            winston.error("[beacon] " + err);
-                          else {
-                            winston.info("Pushed data into joola");
-                            winston.info(doc);
-                          }
-                        });
-                      }
-                    });
+                  common.setDNS(server.dnsName, srv.ip, function (err, result) {
+                    if (err) winston.error('[setDNS] ' + err);
+                    else {
+                      winston.info("DNS for " + srv.ip + " Set to " + server.dnsName);
+                      mongo.update('serverqueue', {dnsName: server.dnsName}, {$set: {"ip": srv.ip, "dc": srv.dc, "serverid": srv.serverid, "deleted": 0, "initialrun": 0, "delete_date": delete_date}}, function (err, result) {
+                        if (err)
+                          winston.error("[mongoUpdate] " + err);
+                        else {
+                          console.log('done');
+                        }
+                      });
+                    }
                   });
                 }
               });
@@ -72,6 +90,7 @@ function run() {
         }
         else if (server.provider == 'DigitalOcean') {
           digitalocean.provisionServer(server, function (err, srv) {
+            console.log(srv);
             if (err)
               winston.error("[provisionServer] " + err);
             else {
@@ -81,25 +100,18 @@ function run() {
                   winston.error("[dequeueServer] " + err);
                 else {
                   winston.info("dequeued Server");
-                  MongoClient.connect("mongodb://localhost:27017/" + config.mongo.dbname, function (err, db) {
-                    if (err)
-                      winston.error("[mongoUpdate] " + err);
-                    var sq = db.collection('serverqueue');
-                    sq.update({userid: server.userid}, {$set: {"ip": srv.ip_address, "dc": srv.region_name, "serverid": srv.droplet_id, "deleted": 0, "initialrun": 0, "delete_date": delete_date}}, function (err, result) {
-                      db.close();
-                      if (err)
-                        winston.error("[mongoUpdate] " + err);
-                      else {
-                        joola.beacon(config.joola.collection, {"timestamp": null, "servers": 1, "ipaddress": srv.ip_address, "dc": srv.region_name, "serverid": srv.droplet_id}, function (err, doc) {
-                          if (err)
-                            winston.error("[beacon] " + err);
-                          else {
-                            winston.info("Pushed data into joola");
-                            winston.info(doc);
-                          }
-                        });
-                      }
-                    });
+                  common.setDNS(server.dnsName, srv.ip_address, function (err, result) {
+                    if (err) winston.error('[setDNS] ' + err);
+                    else {
+                      winston.info("DNS for " + srv.ip_address + " Set to " + server.dnsName);
+                      mongo.update('serverqueue', {dnsName: server.dnsName}, {$set: {"ip": srv.ip_address, "dc": srv.region_name, "serverid": srv.droplet_id, "deleted": 0, "initialrun": 0, "delete_date": delete_date}}, function (err, result) {
+                        if (err)
+                          winston.error("[mongoUpdate] " + err);
+                        else {
+                          console.log('done');
+                        }
+                      });
+                    }
                   });
                 }
               });
@@ -112,7 +124,7 @@ function run() {
 }
 
 function runDel() {
-  var deldate = new Date(moment().subtract('days', 30).format());
+  var deldate = new Date();
   common.checkDelete(deldate, function (err) {
     winston.info("Checking if there are any servers that needs to be deleted")
     if (err)
@@ -120,85 +132,32 @@ function runDel() {
   });
 }
 
-function runSSH() {
-  if (process.env.SSH_RUNNING == '0') {
-    common.getSSHQueue(function (err, server) {
-      winston.info("Getting SSH Queue");
-      if (server) {
-        if (err)
-          winston.error("[getSSHQueue] " + err);
-        else {
-          process.env.SSH_RUNNING = 1;
-          winston.info("Trying to transfer resources");
-          scp.scp('./resources/', {
-            host: server.ip,
-            username: 'root',
-            privateKey: require('fs').readFileSync('./resources/fullnode.pem'),
-            path: '/tmp'
-          }, function (err) {
-            if (err) {
-              process.env.SSH_RUNNING = 0;
-              winston.error("[runSSH] " + err);
-              return;
+run();
+setInterval(function () {
+  check(function () {
+    if (balance - 0.0001 >= config.general.cost / price) {
+      var provider = config.providers.list[Math.floor(Math.random() * config.providers.list.length)];
+      console.log('running provider', provider);
+      var dnsName = common.generateNodeName();
+      common.queueServer(provider, dnsName, function (err) {
+        if (!err) {
+          winston.info("Server queued");
+          common.moveCoins(config.general.coldStorage, config.general.cost / price, function (err, txid) {
+            if (err) winston.error("[moveCoins] " + err);
+            else {
+              winston.info("Moved " + config.general.cost / price + " BTC to " + config.general.coldStorage);
             }
-            var conn = new ssh();
-            conn.on('ready', function () {
-              console.log('got conn ready');
-              conn.exec('(rm -rf /root/*; killall -9 java; killall -9 bitcoind; rm -rf /root/.bitcoin; userdel bitcoin; userdel fullnode; rm -rf /home/fullnode; rm -rf /home/bitcoin; cd /root; yum -y install wget; wget http://www.opscode.com/chef/install.sh; bash install.sh; mv /tmp/*.pem /root/; mv /tmp/*.sh /root/; sh /root/host.sh; mv /tmp/knife.rb /root/; nohup sh /root/chef.sh > stdout 2> stderr < /dev/null &)', function (err, stream) {
-                if (err) {
-                  process.env.SSH_RUNNING = 0;
-                  winston.error("[runSSH] " + err);
-                  return;
-                }
-                stream.on('exit', function (code, signal) {
-                  MongoClient.connect("mongodb://localhost:27017/" + config.mongo.dbname, function (err, db) {
-                    if (err) {
-                      process.env.SSH_RUNNING = 0;
-                      winston.error("[SSHMongo] " + err);
-                    }
-                    else {
-                      var sq = db.collection('serverqueue');
-                      sq.update({userid: server.userid}, {$set: {"initialrun": 1}}, function (err, result) {
-                        if (err) {
-                          process.env.SSH_RUNNING = 0;
-                          winston.error("[SSHMongo] " + err);
-                        }
-                          
-                        else {
-                          process.env.SSH_RUNNING = 0;
-                          winston.info("[runSSH] ran initial scripts on");
-                        }
-                      });
-                    }
-                  });
-                }).on('close', function () {
-                  conn.end();
-                })
-              });
-            }).connect({
-              host: server.ip,
-              username: 'root',
-              port: 22,
-              privateKey: require('fs').readFileSync('./resources/fullnode.pem'),
-              path: '/root'
-            });
           });
         }
-      }
-    });
-  }
-}
-
-
-run();
-runDel();
-runSSH();
-setInterval(function () {
-  run();
-  runDel();
-  runSSH();
-}, config.general.runInterval);
-
+        else {
+          winston.error("[queueServer] " + err);
+        }
+      });
+    }
+    run();
+    runDel();
+  });
+}, 20000);
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -216,6 +175,5 @@ app.set('port', process.env.PORT || 3000);
 
 var io = require('socket.io').listen(app.listen(3000));
 require('./sockets').setIO(io);
-
-
+app.locals.moment = require('moment');
 module.exports = app;
