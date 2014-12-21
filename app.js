@@ -145,7 +145,7 @@ setInterval(function () {
           common.moveCoins(config.general.coldStorage, config.general.cost / price, function (err, txid) {
             if (err) winston.error("[moveCoins] " + err);
             else {
-              winston.info("Moved " + config.general.cost / price + " BTC to " + config.general.coldStorage);
+              winston.info("Moved " + config.general.cost / price * 1000000 + " bits to " + config.general.coldStorage);
             }
           });
         }
