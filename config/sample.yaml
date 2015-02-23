@@ -29,30 +29,30 @@ dev:
     password: 'BITCOIND-PASSWORD'
 prod:
   mongo:
-     host: localhost
-     port: 27017
-     dbname: dev_fullnode
+    host: localhost
+    port: 27017
+    dbname: dev_fullnode
   joola:
-   host: "http://localhost:8080"
-   apitoken: "apitoken-demo"
-   collection: dev_bitcoin
+    host: "http://localhost:8080"
+    apitoken: "apitoken-demo"
+    collection: dev_bitcoin
   providers:
-   list:
-     - "Linode"
-     - "DigitalOcean"
-   linode:
-     apikey: "YOUR-API-KEY"
-     rootpass: "DESIRED-ROOT-PASSWORD"
-   digitalocean:
-     clientid: "YOUR-CLIENT-ID"
-     apikey: "YOUR-API-KEY"
-  general:
-   runInterval: 20000
-   coldStorage: 'COLD-STORAGE-ADDRESS'
-   hotStorage: 'HOT-WALLET'
-   cost: 20
+    list:
+      - "Linode"
+      - "DigitalOcean"
+    linode:
+      apikey: "YOUR-API-KEY"
+      rootpass: "DESIRED-ROOT-PASSWORD"
+    digitalocean:
+      clientid: "YOUR-CLIENT-ID"
+      apikey: "YOUR-API-KEY"
+    general:
+    runInterval: 20000
+    coldStorage: 'COLD-STORAGE-ADDRESS'
+    hotStorage: 'HOT-WALLET'
+    cost: 20
   bitcoind:
-   host: 'localhost'
-   port: '8332'
-   username: 'BITCOIND-USERNAME'
-   password: 'BITCOIND-PASSWORD'
+    host: 'localhost'
+    port: '8332'
+    username: 'BITCOIND-USERNAME'
+    password: 'BITCOIND-PASSWORD'

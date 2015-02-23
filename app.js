@@ -4,21 +4,20 @@ if (process.env.NODE_ENV == 'production') {
 else
   var config = require('config').dev;
 
-var joola = require('./lib/joola');
-var common = require('./lib/common');
-var linode = require('./lib/providers/linode');
-var digitalocean = require('./lib/providers/digitalocean');
-var winston = require('winston');
-var moment = require('moment');
-var express = require('express');
-var path = require('path');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var routes = require('./routes/index');
-var app = express();
-var debug = require('debug')('generated-express-app');
-var mongo = require('./lib/mongo');
+var common = require('./lib/common'),
+  linode = require('./lib/providers/linode'),
+  digitalocean = require('./lib/providers/digitalocean'),
+  winston = require('winston'),
+  moment = require('moment'),
+  express = require('express'),
+  path = require('path'),
+  logger = require('morgan'),
+  cookieParser = require('cookie-parser'),
+  bodyParser = require('body-parser'),
+  routes = require('./routes/index'),
+  app = express(),
+  debug = require('debug')('generated-express-app'),
+  mongo = require('./lib/mongo');
 
 process.env.RUNNING = 0;
 
@@ -26,26 +25,28 @@ var price = 50000;
 var balance = 0;
 
 function check(callback) {
-  common.getPrice(function (err, data) {
-    if (err) winston.error('[getPrice] ' + err);
-    else {
-      mongo.insert('price', { price: data, source: 'bitstamp', timestamp: new Date()}, function (err) {
-        if (err) winston.error('[insert getPrice] ' + err);
-        price = data;
-        winston.info('Inserted price', data);
-        common.getBalance(function (err, data) {
-          if (err) winston.error('[getBalance] ' + err);
-          else {
-            mongo.insert('balance', { balance: data, timestamp: new Date()}, function (err) {
-              if (err) winston.error('[insert getBalance] ' + err);
-              balance = data;
-              winston.info('Inserted balance', data);
-              return callback();
-            });
-          }
+  common.init(config,function() {
+    common.getPrice(function (err, data) {
+      if (err) winston.error('[getPrice] ' + err);
+      else {
+        mongo.insert('price', { price: data, source: 'bitstamp', timestamp: new Date()}, function (err) {
+          if (err) winston.error('[insert getPrice] ' + err);
+          price = data;
+          winston.info('Inserted price', data);
+          common.getBalance(function (err, data) {
+            if (err) winston.error('[getBalance] ' + err);
+            else {
+              mongo.insert('balance', { balance: data, timestamp: new Date()}, function (err) {
+                if (err) winston.error('[insert getBalance] ' + err);
+                balance = data;
+                winston.info('Inserted balance', data);
+                return callback();
+              });
+            }
+          });
         });
-      });
-    }
+      }
+    });
   });
 }
 
@@ -58,34 +59,36 @@ function run() {
       else if (server) {
         winston.info("Got server queue");
         if (server.provider == 'Linode') {
-          linode.provisionServer(server, function (err, srv) {
-            if (err) {
-              process.env.RUNNING = '0';
-              winston.error("[provisionServer] " + err);
-            }
-            else {
-              winston.info("Provisioned server");
-              common.dequeueServer(server, function (err, res) {
-                if (err)
-                  winston.error("[dequeueServer] " + err);
-                else {
-                  winston.info("dequeued Server");
-                  common.setDNS(server.dnsName, srv.ip, function (err, result) {
-                    if (err) winston.error('[setDNS] ' + err);
-                    else {
-                      winston.info("DNS for " + srv.ip + " Set to " + server.dnsName);
-                      mongo.update('serverqueue', {dnsName: server.dnsName}, {$set: {"ip": srv.ip, "dc": srv.dc, "serverid": srv.serverid, "deleted": 0, "initialrun": 0, "delete_date": delete_date}}, function (err, result) {
-                        if (err)
-                          winston.error("[mongoUpdate] " + err);
-                        else {
-                          console.log('done');
-                        }
-                      });
-                    }
-                  });
-                }
-              });
-            }
+          linode.init(config, function() {
+            linode.provisionServer(server, function (err, srv) {
+              if (err) {
+                process.env.RUNNING = '0';
+                winston.error("[provisionServer] " + err);
+              }
+              else {
+                winston.info("Provisioned server");
+                common.dequeueServer(server, function (err, res) {
+                  if (err)
+                    winston.error("[dequeueServer] " + err);
+                  else {
+                    winston.info("dequeued Server");
+                    common.setDNS(server.dnsName, srv.ip, function (err, result) {
+                      if (err) winston.error('[setDNS] ' + err);
+                      else {
+                        winston.info("DNS for " + srv.ip + " Set to " + server.dnsName);
+                        mongo.update('serverqueue', {dnsName: server.dnsName}, {$set: {"ip": srv.ip, "dc": srv.dc, "serverid": srv.serverid, "deleted": 0, "initialrun": 0, "delete_date": delete_date}}, function (err, result) {
+                          if (err)
+                            winston.error("[mongoUpdate] " + err);
+                          else {
+                            console.log('done');
+                          }
+                        });
+                      }
+                    });
+                  }
+                });
+              }
+            });
           });
         }
         else if (server.provider == 'DigitalOcean') {
