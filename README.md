@@ -28,4 +28,4 @@ Bugs, vulnerabilities or ideas, please submit an issue.
 
 ![13K3wqxdRxfimn3xxdAqaDFBD24XVtrcw9](http://i.imgur.com/mwSMNDY.png)
 
-13K3wqxdRxfimn3xxdAqaDFBD24XVtrcw9T
+13K3wqxdRxfimn3xxdAqaDFBD24XVtrcw9
